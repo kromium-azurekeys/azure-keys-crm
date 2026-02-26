@@ -1,0 +1,264 @@
+'use client'
+
+import { useEffect, useState } from 'react'
+import { supabase, Profile } from '@/lib/supabase'
+import { Plus, X, CheckSquare, Circle, Clock, AlertCircle } from 'lucide-react'
+
+interface TasksModuleProps { profile: Profile | null }
+
+const PRIORITY_COLORS: Record<string, string> = { low: '#4a8c7a', medium: '#c9a84c', high: '#c97a1e', urgent: '#ff6b6b' }
+const TASK_TYPES = ['call', 'email', 'meeting', 'viewing', 'follow_up', 'document', 'other']
+
+export default function TasksModule({ profile }: TasksModuleProps) {
+  const [tasks, setTasks] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [showModal, setShowModal] = useState(false)
+  const [selectedTask, setSelectedTask] = useState<any>(null)
+  const [form, setForm] = useState<any>({ status: 'pending', priority: 'medium', type: 'other' })
+  const [saving, setSaving] = useState(false)
+  const [contacts, setContacts] = useState<any[]>([])
+  const [agents, setAgents] = useState<any[]>([])
+  const [filter, setFilter] = useState('pending')
+
+  useEffect(() => { loadData() }, [filter])
+
+  const loadData = async () => {
+    setLoading(true)
+    const [{ data: t }, { data: c }, { data: a }] = await Promise.all([
+      (() => {
+        let q = supabase.from('tasks').select('*, profiles!assigned_to(full_name), contacts(first_name, last_name)').order('due_date', { ascending: true, nullsFirst: false })
+        if (filter !== 'all') q = q.eq('status', filter)
+        return q.limit(100)
+      })(),
+      supabase.from('contacts').select('id, first_name, last_name').order('first_name'),
+      supabase.from('profiles').select('id, full_name').order('full_name')
+    ])
+    setTasks(t || [])
+    setContacts(c || [])
+    setAgents(a || [])
+    setLoading(false)
+  }
+
+  const saveTask = async () => {
+    setSaving(true)
+    try {
+      if (selectedTask) {
+        await supabase.from('tasks').update(form).eq('id', selectedTask.id)
+      } else {
+        await supabase.from('tasks').insert({ ...form, created_by: profile?.id, assigned_to: form.assigned_to || profile?.id })
+      }
+      setShowModal(false)
+      loadData()
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const toggleComplete = async (task: any) => {
+    const newStatus = task.status === 'completed' ? 'pending' : 'completed'
+    await supabase.from('tasks').update({ status: newStatus, completed_at: newStatus === 'completed' ? new Date().toISOString() : null }).eq('id', task.id)
+    loadData()
+  }
+
+  const isOverdue = (task: any) => task.due_date && new Date(task.due_date) < new Date() && task.status !== 'completed'
+
+  return (
+    <div className="p-8 animate-fade-up">
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <p className="text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)' }}>Workflow</p>
+          <h1 className="serif text-4xl font-light" style={{ color: 'var(--white)' }}>
+            Task <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Management</em>
+          </h1>
+          <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
+            {tasks.filter(t => t.status === 'pending').length} pending · {tasks.filter(t => isOverdue(t)).length} overdue
+          </p>
+        </div>
+        <button onClick={() => { setForm({ status: 'pending', priority: 'medium', type: 'other' }); setSelectedTask(null); setShowModal(true) }} className="btn-gold">
+          <Plus size={16} /> Add Task
+        </button>
+      </div>
+
+      {/* Filter */}
+      <div className="flex gap-3 mb-6">
+        {['pending', 'in_progress', 'completed', 'all'].map(f => (
+          <button key={f} onClick={() => setFilter(f)} className="text-xs px-4 py-2 capitalize tracking-wider" style={{
+            background: filter === f ? 'var(--gold)' : 'transparent',
+            color: filter === f ? 'var(--navy)' : 'var(--muted)',
+            border: `1px solid ${filter === f ? 'var(--gold)' : 'rgba(201,168,76,0.15)'}`,
+            cursor: 'pointer', fontFamily: 'var(--sans)', letterSpacing: '0.1em'
+          }}>
+            {f.replace(/_/g, ' ')}
+          </button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div className="flex justify-center py-20"><div className="spinner" /></div>
+      ) : tasks.length === 0 ? (
+        <div className="crm-card p-16 text-center">
+          <CheckSquare size={32} style={{ color: 'rgba(248,245,240,0.15)', margin: '0 auto 12px' }} />
+          <p className="serif text-2xl font-light mb-3" style={{ color: 'var(--muted)' }}>No tasks found</p>
+          <button onClick={() => { setForm({ status: 'pending', priority: 'medium', type: 'other' }); setSelectedTask(null); setShowModal(true) }} className="btn-gold">Add Task</button>
+        </div>
+      ) : (
+        <div className="space-y-2">
+          {tasks.map(task => (
+            <div key={task.id} className={`crm-card p-4 flex items-start gap-4 transition-all ${task.status === 'completed' ? 'opacity-50' : ''}`}>
+              <button
+                onClick={() => toggleComplete(task)}
+                className="mt-0.5 flex-shrink-0"
+                style={{ background: 'none', border: 'none', cursor: 'pointer', color: task.status === 'completed' ? '#4a8c4a' : 'rgba(248,245,240,0.2)', padding: 0 }}
+              >
+                {task.status === 'completed' ? <CheckSquare size={18} /> : <Circle size={18} />}
+              </button>
+
+              <div className="flex-1 min-w-0">
+                <div className="flex items-start justify-between gap-3">
+                  <p className={`text-sm font-medium ${task.status === 'completed' ? 'line-through' : ''}`} style={{ color: 'var(--white)' }}>
+                    {task.title}
+                  </p>
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {isOverdue(task) && (
+                      <span className="flex items-center gap-1 text-xs" style={{ color: '#ff6b6b' }}>
+                        <AlertCircle size={12} /> Overdue
+                      </span>
+                    )}
+                    <span className="text-xs px-2 py-0.5 capitalize" style={{
+                      background: `${PRIORITY_COLORS[task.priority] || '#888'}15`,
+                      color: PRIORITY_COLORS[task.priority] || '#888',
+                      border: `1px solid ${PRIORITY_COLORS[task.priority] || '#888'}30`,
+                      fontSize: '0.65rem', letterSpacing: '0.08em'
+                    }}>
+                      {task.priority}
+                    </span>
+                    <span className="text-xs px-2 py-0.5 capitalize" style={{
+                      background: 'rgba(255,255,255,0.04)', color: 'var(--muted)',
+                      border: '1px solid rgba(255,255,255,0.06)', fontSize: '0.65rem'
+                    }}>
+                      {task.type?.replace(/_/g, ' ')}
+                    </span>
+                  </div>
+                </div>
+
+                {task.description && (
+                  <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>{task.description}</p>
+                )}
+
+                <div className="flex items-center gap-4 mt-2">
+                  {task.due_date && (
+                    <div className="flex items-center gap-1">
+                      <Clock size={11} style={{ color: isOverdue(task) ? '#ff6b6b' : 'var(--muted)' }} />
+                      <span className="text-xs" style={{ color: isOverdue(task) ? '#ff6b6b' : 'var(--muted)' }}>
+                        {new Date(task.due_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    </div>
+                  )}
+                  {task.contacts && (
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                      Contact: {task.contacts.first_name} {task.contacts.last_name}
+                    </span>
+                  )}
+                  {task.profiles && (
+                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                      Assigned: {task.profiles.full_name}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <button onClick={() => { setForm(task); setSelectedTask(task); setShowModal(true) }} className="text-xs px-2 py-1 flex-shrink-0" style={{
+                background: 'rgba(201,168,76,0.08)', color: 'var(--gold)', border: '1px solid rgba(201,168,76,0.12)', cursor: 'pointer'
+              }}>
+                Edit
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Modal */}
+      {showModal && (
+        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+          <div className="crm-card overflow-y-auto" style={{ width: '90%', maxWidth: 560, maxHeight: '90vh' }}>
+            <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+              <div>
+                <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedTask ? 'Edit' : 'New'} Task</p>
+                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--white)' }}>{selectedTask ? 'Update Task' : 'Create Task'}</h2>
+              </div>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}><X size={20} /></button>
+            </div>
+
+            <div className="p-6 space-y-4">
+              <div>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Title *</label>
+                <input className="crm-input" value={form.title || ''} onChange={e => setForm({...form, title: e.target.value})} placeholder="Task title" />
+              </div>
+
+              <div className="grid grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Type</label>
+                  <select className="crm-select" value={form.type || 'other'} onChange={e => setForm({...form, type: e.target.value})}>
+                    {TASK_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Priority</label>
+                  <select className="crm-select" value={form.priority || 'medium'} onChange={e => setForm({...form, priority: e.target.value})}>
+                    <option value="low">Low</option>
+                    <option value="medium">Medium</option>
+                    <option value="high">High</option>
+                    <option value="urgent">Urgent</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Status</label>
+                  <select className="crm-select" value={form.status || 'pending'} onChange={e => setForm({...form, status: e.target.value})}>
+                    <option value="pending">Pending</option>
+                    <option value="in_progress">In Progress</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Due Date</label>
+                  <input type="datetime-local" className="crm-input" value={form.due_date ? form.due_date.slice(0, 16) : ''} onChange={e => setForm({...form, due_date: e.target.value})} />
+                </div>
+                <div>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Assign To</label>
+                  <select className="crm-select" value={form.assigned_to || ''} onChange={e => setForm({...form, assigned_to: e.target.value})}>
+                    <option value="">Select agent</option>
+                    {agents.map(a => <option key={a.id} value={a.id}>{a.full_name}</option>)}
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Related Contact</label>
+                <select className="crm-select" value={form.contact_id || ''} onChange={e => setForm({...form, contact_id: e.target.value})}>
+                  <option value="">None</option>
+                  {contacts.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Description</label>
+                <textarea className="crm-input" rows={3} value={form.description || ''} onChange={e => setForm({...form, description: e.target.value})} placeholder="Task details..." />
+              </div>
+            </div>
+
+            <div className="p-6 border-t flex justify-end gap-3" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+              <button onClick={() => setShowModal(false)} className="btn-ghost">Cancel</button>
+              <button onClick={saveTask} className="btn-gold" disabled={saving}>
+                {saving ? 'Saving...' : selectedTask ? 'Update Task' : 'Create Task'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
