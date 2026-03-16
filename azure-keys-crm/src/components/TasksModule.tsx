@@ -111,7 +111,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-3">
-                  <p className={`text-sm font-medium ${task.status === 'completed' ? 'line-through' : ''}`} style={{ color: 'var(--text)' }}>
+                  <p className={`text-sm font-medium ${task.status === 'completed' ? 'line-through' : ''}`} style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13.5 }}>
                     {task.title}
                   </p>
                   <div className="flex items-center gap-2 flex-shrink-0">
@@ -180,7 +180,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedTask ? 'Edit' : 'New'} Task</p>
-                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--text)' }}>{selectedTask ? 'Update Task' : 'Create Task'}</h2>
+                <h2 className="serif text-2xl font-light mt-1" style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400, color: 'var(--text)' }}>{selectedTask ? 'Update Task' : 'Create Task'}</h2>
               </div>
               <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer' }}><X size={20} /></button>
             </div>

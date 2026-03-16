@@ -112,7 +112,7 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
             <div key={v.id} className="card" style={{ padding: isMobile ? 14 : 20, cursor:"pointer" }} onClick={() => { setForm(v); setSelectedViewing(v); setShowModal(true) }}>
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <p className="serif text-lg font-light" style={{ color: 'var(--text)' }}>{v.properties?.title || 'Property'}</p>
+                  <p className="serif text-lg font-light" style={{ fontFamily: 'var(--serif)', fontSize: '1.05rem', fontWeight: 400, color: 'var(--text)' }}>{v.properties?.title || 'Property'}</p>
                   <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
                     {v.properties?.city ? `${v.properties.city} · ` : ''}
                     {v.contacts?.first_name} {v.contacts?.last_name}
@@ -188,7 +188,7 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedViewing ? 'Edit' : 'Schedule'} Viewing</p>
-                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--text)' }}>
+                <h2 className="serif text-2xl font-light mt-1" style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400, color: 'var(--text)' }}>
                   {selectedViewing ? 'Update Viewing' : 'New Viewing'}
                 </h2>
               </div>

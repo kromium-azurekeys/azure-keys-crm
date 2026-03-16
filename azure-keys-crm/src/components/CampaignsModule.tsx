@@ -72,7 +72,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
           { label: 'Completed', value: campaigns.filter(c => c.status === 'completed').length, color: '#6a4a8c' },
         ].map(({ label, value, color }) => (
           <div key={label} className="metric-card">
-            <p className="serif text-3xl font-light mb-1" style={{ color }}>{value}</p>
+            <p className="serif text-3xl font-light mb-1" style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', fontWeight: 300, color }}>{value}</p>
             <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--text-3)', fontSize: '0.65rem' }}>{label}</p>
           </div>
         ))}
@@ -100,7 +100,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                       <Icon size={16} style={{ color: 'var(--gold)' }} />
                     </div>
                     <div>
-                      <p className="font-medium" style={{ color: 'var(--text)' }}>{c.name}</p>
+                      <p className="font-medium" style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13.5, fontWeight: 500 }}>{c.name}</p>
                       <p className="text-xs capitalize" style={{ color: 'var(--text-3)' }}>{c.type} campaign</p>
                     </div>
                   </div>
@@ -125,7 +125,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                     { label: 'Unsub', value: c.stats?.unsubscribed || 0 },
                   ].map(({ label, value }) => (
                     <div key={label} className="text-center">
-                      <p className="text-sm font-medium" style={{ color: 'var(--text)' }}>{value}</p>
+                      <p className="text-sm font-medium" style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 500 }}>{value}</p>
                       <p style={{ color: 'var(--text-3)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</p>
                     </div>
                   ))}
@@ -160,7 +160,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedCampaign ? 'Edit' : 'New'} Campaign</p>
-                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--text)' }}>{selectedCampaign ? selectedCampaign.name : 'Create Campaign'}</h2>
+                <h2 className="serif text-2xl font-light mt-1" style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400, color: 'var(--text)' }}>{selectedCampaign ? selectedCampaign.name : 'Create Campaign'}</h2>
               </div>
               <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer' }}><X size={20} /></button>
             </div>

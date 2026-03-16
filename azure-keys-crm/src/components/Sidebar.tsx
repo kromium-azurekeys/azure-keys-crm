@@ -1,11 +1,12 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { CRMSection } from '@/app/crm/page'
 import {
   LayoutDashboard, Users, GitBranch, Building2, Calendar,
   FileText, CheckSquare, Mail, BarChart3, LogOut, Key,
   Globe, Calculator, Zap, Sparkles, Network, Sun, Home, X, Menu,
-  FolderOpen, DollarSign
+  FolderOpen, DollarSign, Moon
 } from 'lucide-react'
 
 interface SidebarProps {
@@ -65,6 +66,22 @@ export default function Sidebar({ activeSection, onNavigate, profile, onSignOut,
   const initials = profile?.full_name
     ? profile.full_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
     : '?'
+
+  // Dark mode state — read from localStorage / html attribute
+  const [isDark, setIsDark] = useState(false)
+
+  // Sync on mount
+  useEffect(() => {
+    const theme = document.documentElement.getAttribute('data-theme')
+    setIsDark(theme === 'dark')
+  }, [])
+
+  const toggleTheme = () => {
+    const next = !isDark
+    setIsDark(next)
+    document.documentElement.setAttribute('data-theme', next ? 'dark' : 'light')
+    try { localStorage.setItem('ak-theme', next ? 'dark' : 'light') } catch(e) {}
+  }
 
   const handleNav = (section: CRMSection) => {
     onNavigate(section)
@@ -145,15 +162,34 @@ export default function Sidebar({ activeSection, onNavigate, profile, onSignOut,
           ))}
         </nav>
 
-        {/* User */}
+        {/* User + theme */}
         <div style={{ padding: '10px 12px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
+          {/* Theme toggle */}
+          <button
+            onClick={toggleTheme}
+            title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
+            style={{
+              width: '100%', display: 'flex', alignItems: 'center', gap: 9,
+              padding: '7px 10px', borderRadius: 8, marginBottom: 8,
+              background: 'var(--surface-2)', border: '1px solid var(--border)',
+              cursor: 'pointer', color: 'var(--text-3)', transition: 'all 0.15s',
+            }}
+            onMouseOver={e => (e.currentTarget.style.color = 'var(--text)')}
+            onMouseOut={e => (e.currentTarget.style.color = 'var(--text-3)')}
+          >
+            {isDark ? <Sun size={14} color="var(--gold)" /> : <Moon size={14} />}
+            <span style={{ fontSize: 12, fontFamily: 'var(--sans)' }}>
+              {isDark ? 'Light mode' : 'Dark mode'}
+            </span>
+          </button>
+
           <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 10px', borderRadius: 8, background: 'var(--surface-2)' }}>
             <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold)', fontSize: '10px', fontWeight: 600, flexShrink: 0 }}>
               {initials}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{profile?.full_name || 'User'}</p>
-              <p style={{ fontSize: '10px', color: 'var(--gold)', textTransform: 'capitalize' }}>{profile?.role || 'agent'}</p>
+              <p style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--sans)' }}>{profile?.full_name || 'User'}</p>
+              <p style={{ fontSize: '10px', color: 'var(--gold)', textTransform: 'capitalize', fontFamily: 'var(--sans)' }}>{profile?.role || 'agent'}</p>
             </div>
             <button
               onClick={onSignOut}
