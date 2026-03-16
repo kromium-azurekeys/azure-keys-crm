@@ -210,36 +210,31 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); font
 }
 
 /* ── Modals ── */
+/* Overlay scrolls — modal anchored at top, full content always reachable */
 .modal-overlay {
   position: fixed; inset: 0;
   background: rgba(17,24,39,0.55);
   backdrop-filter: blur(4px);
   z-index: 50;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding: 40px 20px;
   overflow-y: auto;
-  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding: 32px 20px 48px;
 }
+/* Modal: no max-height, no overflow:hidden — grows to its content */
 .modal {
   background: var(--surface);
   border-radius: 14px;
   box-shadow: var(--shadow-xl);
   border: 1px solid var(--border);
-  overflow: hidden;
   animation: fadeUp 0.2s ease;
   position: relative;
-  display: flex;
-  flex-direction: column;
   width: 90%;
   max-width: 580px;
-  margin: auto;
-  /* No maxHeight — modal grows to content, overlay scrolls */
+  margin: 0 auto;
 }
-.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
-.modal-body { padding: 20px 24px; flex: 1; }
-.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); background: var(--surface-2); display: flex; justify-content: flex-end; gap: 8px; flex-shrink: 0; }
+.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+.modal-body { padding: 20px 24px; }
+.modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); background: var(--surface-2); display: flex; justify-content: flex-end; gap: 8px; border-radius: 0 0 14px 14px; }
 
 /* ── Search ── */
 .search-wrap { position: relative; display: flex; align-items: center; }
@@ -294,34 +289,40 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); font
     padding: 16px !important;
   }
 
-  /* ── Modals → true bottom sheet ── */
+  /* ── Modals → bottom sheet on mobile ── */
   .modal-overlay {
     padding: 0 !important;
+    overflow-y: hidden !important;
+    display: flex !important;
     align-items: flex-end !important;
-    overflow: hidden !important;
+    justify-content: center !important;
   }
   .modal {
     width: 100% !important;
     max-width: 100% !important;
     border-radius: 20px 20px 0 0 !important;
-    max-height: 90vh !important;
     margin: 0 !important;
-    animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1) !important;
-  }
-  .modal-body {
-    padding: 16px !important;
+    max-height: 90vh !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch !important;
-    flex: 1 !important;
+    animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1) !important;
   }
   .modal-header {
     padding: 16px 16px 12px !important;
-    flex-shrink: 0 !important;
+    position: sticky !important;
+    top: 0 !important;
+    background: var(--surface) !important;
+    z-index: 1 !important;
+  }
+  .modal-body {
+    padding: 16px !important;
   }
   .modal-footer {
     padding: 12px 16px !important;
     padding-bottom: max(16px, env(safe-area-inset-bottom)) !important;
-    flex-shrink: 0 !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    background: var(--surface-2) !important;
   }
 
   /* ── Tables — prevent overflow ── */
