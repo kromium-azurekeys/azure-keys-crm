@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useIsMobile } from '@/hooks/useIsMobile'
 import { supabase, Profile } from '@/lib/supabase'
 import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, AreaChart, Area } from 'recharts'
 
@@ -11,6 +12,7 @@ const AZURE = '#1e7ec8'
 const OCEAN = '#1a4a7a'
 
 export default function ReportsModule({ profile }: ReportsModuleProps) {
+  const isMobile = useIsMobile()
   const [loading, setLoading] = useState(true)
   const [stats, setStats] = useState<any>({})
   const [dealsByStage, setDealsByStage] = useState<any[]>([])
@@ -104,155 +106,150 @@ export default function ReportsModule({ profile }: ReportsModuleProps) {
   if (loading) return <div className="flex justify-center py-20"><div className="spinner" /></div>
 
   return (
-    <div className="p-8 animate-fade-up">
-      <div className="mb-8">
-        <p className="text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)' }}>Analytics</p>
-        <h1 className="serif text-4xl font-light" style={{ color: 'var(--white)' }}>
+    <div className="animate-fade-up" style={{ padding: isMobile ? 16 : '28px 32px' }}>
+      <div style={{ marginBottom: isMobile ? 20 : 28 }}>
+        <p style={{ fontSize: 10, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 4 }}>Analytics</p>
+        <h1 className="page-title" style={{ fontFamily: 'var(--serif)', fontWeight: 400, color: 'var(--text)' }}>
           Performance <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Reports</em>
         </h1>
-        <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>Comprehensive KPI tracking & business insights</p>
+        <p className="page-sub" style={{ color: 'var(--text-3)' }}>Comprehensive KPI tracking & business insights</p>
       </div>
 
       {/* KPI grid */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4,1fr)', gap: isMobile ? 10 : 16, marginBottom: isMobile ? 12 : 20 }}>
         {[
           { label: 'Total Revenue', value: formatCurrency(stats.totalRevenue), sub: 'Closed deals', color: GOLD },
           { label: 'Pipeline Value', value: formatCurrency(stats.pipeline), sub: 'Open deals', color: AZURE },
           { label: 'Deals Won', value: stats.wonDeals, sub: 'Closed won', color: '#4a8c4a' },
           { label: 'Conversion Rate', value: `${stats.wonDeals + (stats.pipeline > 0 ? 1 : 0) > 0 ? Math.round(stats.wonDeals / Math.max(stats.wonDeals + 1, 1) * 100) : 0}%`, sub: 'Win rate', color: '#9a7ac8' },
         ].map(({ label, value, sub, color }) => (
-          <div key={label} className="metric-card">
-            <p className="serif text-3xl font-light mb-1" style={{ color }}>{value}</p>
-            <p className="text-xs tracking-widest uppercase mb-1" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>{label}</p>
-            <p className="text-xs" style={{ color: 'var(--muted)' }}>{sub}</p>
+          <div key={label} className="metric-card" style={{ padding: isMobile ? 14 : 20 }}>
+            <p style={{ fontFamily: 'var(--serif)', fontSize: isMobile ? '1.4rem' : '1.8rem', fontWeight: 400, marginBottom: 4, color }}>{value}</p>
+            <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 2 }}>{label}</p>
+            <p style={{ fontSize: 11, color: 'var(--text-3)' }}>{sub}</p>
           </div>
         ))}
       </div>
 
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4,1fr)', gap: isMobile ? 10 : 16, marginBottom: isMobile ? 16 : 24 }}>
         {[
           { label: 'Total Contacts', value: stats.totalContacts },
           { label: 'Active Listings', value: stats.activeProperties },
           { label: 'Viewings', value: stats.viewings },
           { label: 'Pending Tasks', value: stats.pendingTasks },
         ].map(({ label, value }) => (
-          <div key={label} className="crm-card p-4 text-center">
-            <p className="serif text-3xl font-light" style={{ color: 'var(--white)' }}>{value}</p>
-            <p className="text-xs tracking-wider uppercase mt-1" style={{ color: 'var(--muted)', fontSize: '0.65rem' }}>{label}</p>
+          <div key={label} className="card" style={{ padding: isMobile ? '12px 14px' : '16px 20px', textAlign: 'center' }}>
+            <p style={{ fontFamily: 'var(--serif)', fontSize: isMobile ? '1.4rem' : '1.8rem', fontWeight: 400, color: 'var(--text)' }}>{value}</p>
+            <p style={{ fontSize: 10, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--text-3)', marginTop: 4 }}>{label}</p>
           </div>
         ))}
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-2 gap-6 mb-6">
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 14 : 24, marginBottom: isMobile ? 14 : 24 }}>
         {/* Pipeline by stage */}
-        <div className="crm-card p-6">
-          <p className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>Deals by Stage</p>
+        <div className="card" style={{ padding: isMobile ? 16 : 24 }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16 }}>Deals by Stage</p>
           {dealsByStage.length > 0 ? (
             <ResponsiveContainer width="100%" height={220}>
               <BarChart data={dealsByStage} layout="vertical">
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" tick={{ fill: 'rgba(248,245,240,0.4)', fontSize: 10 }} />
-                <YAxis type="category" dataKey="name" tick={{ fill: 'rgba(248,245,240,0.5)', fontSize: 10 }} width={100} />
-                <Tooltip contentStyle={{ background: 'var(--navy-mid)', border: '1px solid rgba(201,168,76,0.2)', borderRadius: 0 }} />
+                <XAxis type="number" tick={{ fill: 'var(--text-4)', fontSize: 10 }} />
+                <YAxis type="category" dataKey="name" tick={{ fill: 'var(--text-3)', fontSize: 10 }} width={isMobile ? 80 : 100} />
+                <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }} />
                 <Bar dataKey="value" fill={GOLD} />
               </BarChart>
             </ResponsiveContainer>
-          ) : <p className="text-center py-16 text-xs" style={{ color: 'var(--muted)' }}>No deal data</p>}
+          ) : <p style={{ textAlign: 'center', padding: '48px 0', fontSize: 12, color: 'var(--text-3)' }}>No deal data</p>}
         </div>
 
         {/* Contacts by source */}
-        <div className="crm-card p-6">
-          <p className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>Lead Sources</p>
+        <div className="card" style={{ padding: isMobile ? 16 : 24 }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16 }}>Lead Sources</p>
           {contactsBySource.length > 0 ? (
-            <div className="flex items-center gap-4">
-              <ResponsiveContainer width="50%" height={200}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
+              <ResponsiveContainer width={isMobile ? '100%' : '50%'} height={180}>
                 <PieChart>
-                  <Pie data={contactsBySource} cx="50%" cy="50%" outerRadius={80} dataKey="value">
+                  <Pie data={contactsBySource} cx="50%" cy="50%" outerRadius={75} dataKey="value">
                     {contactsBySource.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                   </Pie>
-                  <Tooltip contentStyle={{ background: 'var(--navy-mid)', border: '1px solid rgba(201,168,76,0.2)', borderRadius: 0 }} />
+                  <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }} />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="flex-1 space-y-2">
+              <div style={{ flex: 1, minWidth: 100 }}>
                 {contactsBySource.map((item, i) => (
-                  <div key={i} className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 rounded-full" style={{ background: PIE_COLORS[i % PIE_COLORS.length] }} />
-                      <span className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{item.name}</span>
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <div style={{ width: 8, height: 8, borderRadius: '50%', background: PIE_COLORS[i % PIE_COLORS.length], flexShrink: 0 }} />
+                      <span style={{ fontSize: 12, color: 'var(--text-3)', textTransform: 'capitalize' }}>{item.name}</span>
                     </div>
-                    <span className="text-xs" style={{ color: 'var(--white)' }}>{item.value}</span>
+                    <span style={{ fontSize: 12, color: 'var(--text)' }}>{item.value}</span>
                   </div>
                 ))}
               </div>
             </div>
-          ) : <p className="text-center py-16 text-xs" style={{ color: 'var(--muted)' }}>No contact data</p>}
+          ) : <p style={{ textAlign: 'center', padding: '48px 0', fontSize: 12, color: 'var(--text-3)' }}>No contact data</p>}
         </div>
       </div>
 
-      {/* Contact lifecycle funnel */}
-      <div className="grid grid-cols-2 gap-6 mb-6">
-        <div className="crm-card p-6">
-          <p className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>Customer Lifecycle Funnel</p>
+      {/* Contact lifecycle funnel + Agent performance */}
+      <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: isMobile ? 14 : 24, marginBottom: isMobile ? 14 : 24 }}>
+        <div className="card" style={{ padding: isMobile ? 16 : 24 }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16 }}>Customer Lifecycle Funnel</p>
           {contactsByStage.length > 0 ? (
-            <div className="space-y-3">
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
               {contactsByStage.map((item, i) => {
                 const max = Math.max(...contactsByStage.map(s => s.value))
                 return (
                   <div key={i}>
-                    <div className="flex justify-between mb-1">
-                      <span className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{item.name}</span>
-                      <span className="text-xs" style={{ color: 'var(--white)' }}>{item.value}</span>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
+                      <span style={{ fontSize: 12, color: 'var(--text-3)', textTransform: 'capitalize' }}>{item.name}</span>
+                      <span style={{ fontSize: 12, color: 'var(--text)' }}>{item.value}</span>
                     </div>
-                    <div className="h-2 w-full" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                      <div className="h-full transition-all" style={{
-                        width: `${(item.value / max) * 100}%`,
-                        background: PIE_COLORS[i % PIE_COLORS.length]
-                      }} />
+                    <div style={{ height: 6, background: 'var(--surface-2)', borderRadius: 3, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${(item.value / max) * 100}%`, background: PIE_COLORS[i % PIE_COLORS.length], borderRadius: 3 }} />
                     </div>
                   </div>
                 )
               })}
             </div>
-          ) : <p className="text-center py-8 text-xs" style={{ color: 'var(--muted)' }}>No lifecycle data</p>}
+          ) : <p style={{ textAlign: 'center', padding: '32px 0', fontSize: 12, color: 'var(--text-3)' }}>No lifecycle data</p>}
         </div>
 
         {/* Agent performance */}
-        <div className="crm-card p-6">
-          <p className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>Agent Performance</p>
+        <div className="card" style={{ padding: isMobile ? 16 : 24, overflow: 'hidden' }}>
+          <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16 }}>Agent Performance</p>
           {agentPerformance.length > 0 ? (
-            <div className="crm-table w-full">
-              <table className="w-full">
+            <div className="crm-table-wrap">
+              <table className="crm-table">
                 <thead>
                   <tr>
-                    <th className="text-left pb-2">Agent</th>
-                    <th className="text-center pb-2">Deals</th>
-                    <th className="text-center pb-2">Won</th>
-                    <th className="text-right pb-2">Pipeline</th>
+                    <th>Agent</th>
+                    <th>Deals</th>
+                    <th>Won</th>
+                    <th>Pipeline</th>
                   </tr>
                 </thead>
                 <tbody>
                   {agentPerformance.map((a, i) => (
                     <tr key={i}>
-                      <td style={{ color: 'var(--white)', fontSize: '0.85rem' }}>{a.name}</td>
-                      <td className="text-center" style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>{a.deals}</td>
-                      <td className="text-center">
-                        <span style={{ color: '#4a8c4a', fontSize: '0.85rem' }}>{a.won}</span>
-                      </td>
-                      <td className="text-right" style={{ color: 'var(--gold)', fontSize: '0.85rem' }}>{formatCurrency(a.value)}</td>
+                      <td style={{ color: 'var(--text)' }}>{a.name}</td>
+                      <td style={{ color: 'var(--text-3)' }}>{a.deals}</td>
+                      <td><span style={{ color: '#4a8c4a' }}>{a.won}</span></td>
+                      <td style={{ color: 'var(--gold)' }}>{formatCurrency(a.value)}</td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          ) : <p className="text-center py-8 text-xs" style={{ color: 'var(--muted)' }}>No agent data</p>}
+          ) : <p style={{ textAlign: 'center', padding: '32px 0', fontSize: 12, color: 'var(--text-3)' }}>No agent data</p>}
         </div>
       </div>
 
       {/* Key metrics summary */}
-      <div className="crm-card p-6">
-        <p className="text-xs tracking-widest uppercase mb-4" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>Business Summary</p>
-        <div className="grid grid-cols-3 gap-8">
+      <div className="card" style={{ padding: isMobile ? 16 : 24 }}>
+        <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: 16 }}>Business Summary</p>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3,1fr)', gap: isMobile ? 20 : 32 }}>
           {[
             {
               title: 'Sales Performance',
@@ -280,12 +277,12 @@ export default function ReportsModule({ profile }: ReportsModuleProps) {
             }
           ].map(({ title, items }) => (
             <div key={title}>
-              <p className="text-xs tracking-wider uppercase mb-4" style={{ color: 'var(--gold)', fontSize: '0.7rem', borderBottom: '1px solid rgba(201,168,76,0.1)', paddingBottom: 8 }}>{title}</p>
-              <div className="space-y-3">
+              <p style={{ fontSize: 10, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--gold)', borderBottom: '1px solid var(--border)', paddingBottom: 8, marginBottom: 14 }}>{title}</p>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                 {items.map(({ label, value }) => (
-                  <div key={label} className="flex justify-between">
-                    <span className="text-xs" style={{ color: 'var(--muted)' }}>{label}</span>
-                    <span className="text-sm font-medium" style={{ color: 'var(--white)' }}>{value}</span>
+                  <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: 12, color: 'var(--text-3)' }}>{label}</span>
+                    <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{value}</span>
                   </div>
                 ))}
               </div>

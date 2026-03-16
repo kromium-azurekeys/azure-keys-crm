@@ -1,96 +1,172 @@
 'use client'
 
 import { CRMSection } from '@/app/crm/page'
-import { Profile } from '@/lib/supabase'
 import {
   LayoutDashboard, Users, GitBranch, Building2, Calendar,
-  FileText, CheckSquare, Mail, BarChart3, LogOut, Key, Settings
+  FileText, CheckSquare, Mail, BarChart3, LogOut, Key,
+  Globe, Calculator, Zap, Sparkles, Network, Sun, Home, X, Menu,
+  FolderOpen, DollarSign
 } from 'lucide-react'
 
 interface SidebarProps {
   activeSection: CRMSection
   onNavigate: (section: CRMSection) => void
-  profile: Profile | null
+  profile: any
   onSignOut: () => void
+  isOpen?: boolean
+  onClose?: () => void
 }
 
-const navItems: { id: CRMSection; label: string; icon: any }[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'contacts', label: 'Contacts', icon: Users },
-  { id: 'pipeline', label: 'Pipeline', icon: GitBranch },
-  { id: 'properties', label: 'Properties', icon: Building2 },
-  { id: 'viewings', label: 'Viewings', icon: Calendar },
-  { id: 'offers', label: 'Offers', icon: FileText },
-  { id: 'tasks', label: 'Tasks', icon: CheckSquare },
-  { id: 'campaigns', label: 'Campaigns', icon: Mail },
-  { id: 'reports', label: 'Reports', icon: BarChart3 },
+const navGroups = [
+  {
+    label: 'Overview',
+    items: [{ id: 'dashboard' as CRMSection, label: 'Dashboard', icon: LayoutDashboard }]
+  },
+  {
+    label: 'Sales',
+    items: [
+      { id: 'contacts' as CRMSection, label: 'Contacts', icon: Users },
+      { id: 'pipeline' as CRMSection, label: 'Pipeline', icon: GitBranch },
+      { id: 'offers' as CRMSection, label: 'Offers', icon: FileText },
+    ]
+  },
+  {
+    label: 'Properties',
+    items: [
+      { id: 'properties' as CRMSection, label: 'Listings', icon: Building2 },
+      { id: 'viewings' as CRMSection, label: 'Viewings', icon: Calendar },
+    ]
+  },
+  {
+    label: 'Operations',
+    items: [
+      { id: 'tasks' as CRMSection, label: 'Tasks', icon: CheckSquare },
+      { id: 'campaigns' as CRMSection, label: 'Campaigns', icon: Mail },
+      { id: 'documents' as CRMSection, label: 'Documents', icon: FolderOpen },
+      { id: 'reports' as CRMSection, label: 'Reports', icon: BarChart3 },
+    ]
+  },
+  {
+    label: 'Caribbean Intel',
+    items: [
+      { id: 'cbi' as CRMSection, label: 'CBI / SERP', icon: Globe },
+      { id: 'foreignbuyer' as CRMSection, label: 'Foreign Buyer FX', icon: DollarSign },
+      { id: 'yield' as CRMSection, label: 'Yield Calculator', icon: Calculator },
+      { id: 'matching' as CRMSection, label: 'Smart Matching', icon: Zap },
+      { id: 'concierge' as CRMSection, label: 'Concierge', icon: Sparkles },
+      { id: 'developer' as CRMSection, label: 'Dev Pipeline', icon: Home },
+      { id: 'referrals' as CRMSection, label: 'Referral Network', icon: Network },
+      { id: 'seasonal' as CRMSection, label: 'Seasonal Intel', icon: Sun },
+    ]
+  },
 ]
 
-export default function Sidebar({ activeSection, onNavigate, profile, onSignOut }: SidebarProps) {
+export default function Sidebar({ activeSection, onNavigate, profile, onSignOut, isOpen, onClose }: SidebarProps) {
+  const initials = profile?.full_name
+    ? profile.full_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
+    : '?'
+
+  const handleNav = (section: CRMSection) => {
+    onNavigate(section)
+    onClose?.()
+  }
+
   return (
-    <aside className="flex flex-col w-56 h-full border-r" style={{
-      background: 'var(--navy-mid)',
-      borderColor: 'rgba(201,168,76,0.1)',
-      minWidth: '14rem'
-    }}>
-      {/* Logo */}
-      <div className="p-6 border-b" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
-        <div className="flex items-center gap-2 mb-1">
-          <Key size={16} style={{ color: 'var(--gold)' }} />
-          <span className="serif text-xl font-light" style={{ color: 'var(--white)' }}>
-            Azure <span style={{ color: 'var(--gold)' }}>Keys</span>
-          </span>
-        </div>
-        <p className="text-xs tracking-widest uppercase" style={{ color: 'rgba(248,245,240,0.25)', fontSize: '0.6rem' }}>
-          CRM Platform
-        </p>
-      </div>
+    <>
+      {/* Mobile overlay backdrop */}
+      <div
+        onClick={onClose}
+        style={{
+          position: 'fixed', inset: 0,
+          background: 'rgba(0,0,0,0.45)',
+          zIndex: 39,
+          display: 'none',
+        }}
+        className={isOpen ? 'sidebar-overlay-visible' : ''}
+      />
 
-      {/* Navigation */}
-      <nav className="flex-1 py-4 overflow-y-auto">
-        <div className="px-4 mb-3">
-          <p className="text-xs tracking-widest uppercase" style={{ color: 'rgba(248,245,240,0.2)', fontSize: '0.6rem' }}>
-            Navigation
-          </p>
-        </div>
-        {navItems.map(({ id, label, icon: Icon }) => (
+      <aside
+        className={`crm-sidebar${isOpen ? ' sidebar-open' : ''}`}
+        style={{
+          width: 220,
+          height: '100vh',
+          background: 'var(--surface)',
+          borderRight: '1px solid var(--border)',
+          display: 'flex',
+          flexDirection: 'column',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          zIndex: 40,
+          overflowY: 'auto',
+          overflowX: 'hidden',
+        }}
+      >
+        {/* Logo */}
+        <div style={{ padding: '16px 14px 14px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <Key size={13} color="var(--gold)" />
+            </div>
+            <div>
+              <p style={{ fontFamily: 'var(--serif)', fontSize: '1rem', fontWeight: 400, color: 'var(--text)', lineHeight: 1.1 }}>
+                Azure <span style={{ color: 'var(--gold)' }}>Keys</span>
+              </p>
+              <p style={{ fontSize: '9px', color: 'var(--text-4)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>CRM</p>
+            </div>
+          </div>
+          {/* Close button — only visible on mobile */}
           <button
-            key={id}
-            onClick={() => onNavigate(id)}
-            className={`nav-item w-full text-left ${activeSection === id ? 'active' : ''}`}
+            onClick={onClose}
+            className="sidebar-close-btn"
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-3)', display: 'none', padding: 4, borderRadius: 6, alignItems: 'center', justifyContent: 'center' }}
           >
-            <Icon size={15} />
-            {label}
+            <X size={16} />
           </button>
-        ))}
-      </nav>
+        </div>
 
-      {/* Profile */}
-      <div className="p-4 border-t" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-8 h-8 flex items-center justify-center text-xs font-medium" style={{
-            background: 'var(--gold)', color: 'var(--navy)', borderRadius: '50%'
-          }}>
-            {profile?.full_name?.charAt(0) || '?'}
-          </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm truncate" style={{ color: 'var(--white)' }}>
-              {profile?.full_name || 'User'}
-            </p>
-            <p className="text-xs tracking-wider capitalize" style={{ color: 'var(--gold)', fontSize: '0.65rem' }}>
-              {profile?.role || 'agent'}
-            </p>
+        {/* Nav */}
+        <nav style={{ flex: 1, overflowY: 'auto', padding: '6px 0' }}>
+          {navGroups.map(group => (
+            <div key={group.label}>
+              <p className="section-label" style={{ padding: '0 16px' }}>{group.label}</p>
+              {group.items.map(({ id, label, icon: Icon }) => (
+                <button
+                  key={id}
+                  onClick={() => handleNav(id)}
+                  className={`nav-item${activeSection === id ? ' active' : ''}`}
+                  style={{ width: 'calc(100% - 12px)', margin: '1px 6px', display: 'flex', alignItems: 'center', gap: 8 }}
+                >
+                  <Icon size={14} style={{ flexShrink: 0 }} />
+                  <span style={{ fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
+                </button>
+              ))}
+            </div>
+          ))}
+        </nav>
+
+        {/* User */}
+        <div style={{ padding: '10px 12px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 10px', borderRadius: 8, background: 'var(--surface-2)' }}>
+            <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold)', fontSize: '10px', fontWeight: 600, flexShrink: 0 }}>
+              {initials}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{profile?.full_name || 'User'}</p>
+              <p style={{ fontSize: '10px', color: 'var(--gold)', textTransform: 'capitalize' }}>{profile?.role || 'agent'}</p>
+            </div>
+            <button
+              onClick={onSignOut}
+              title="Sign out"
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', padding: 3, borderRadius: 4, display: 'flex' }}
+              onMouseOver={e => (e.currentTarget.style.color = 'var(--red)')}
+              onMouseOut={e => (e.currentTarget.style.color = 'var(--text-4)')}
+            >
+              <LogOut size={13} />
+            </button>
           </div>
         </div>
-        <button
-          onClick={onSignOut}
-          className="nav-item w-full text-left"
-          style={{ color: 'rgba(248,245,240,0.35)' }}
-        >
-          <LogOut size={14} />
-          Sign Out
-        </button>
-      </div>
-    </aside>
+      </aside>
+    </>
   )
 }

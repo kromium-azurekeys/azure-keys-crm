@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, CheckSquare, Circle, Clock, AlertCircle } from 'lucide-react'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 interface TasksModuleProps { profile: Profile | null }
 
@@ -10,6 +11,7 @@ const PRIORITY_COLORS: Record<string, string> = { low: '#4a8c7a', medium: '#c9a8
 const TASK_TYPES = ['call', 'email', 'meeting', 'viewing', 'follow_up', 'document', 'other']
 
 export default function TasksModule({ profile }: TasksModuleProps) {
+  const isMobile = useIsMobile()
   const [tasks, setTasks] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -63,32 +65,25 @@ export default function TasksModule({ profile }: TasksModuleProps) {
   const isOverdue = (task: any) => task.due_date && new Date(task.due_date) < new Date() && task.status !== 'completed'
 
   return (
-    <div className="p-8 animate-fade-up">
-      <div className="flex items-start justify-between mb-8">
+    <div className="animate-fade-up" style={{ padding: isMobile ? '16px' : '28px 32px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: isMobile ? 16 : 24 }}>
         <div>
-          <p className="text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)' }}>Workflow</p>
-          <h1 className="serif text-4xl font-light" style={{ color: 'var(--white)' }}>
-            Task <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Management</em>
-          </h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>
+          <p className="page-label">Workflow</p>
+          <h1 className="page-title">Task <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Management</em></h1>
+          <p className="page-sub">
             {tasks.filter(t => t.status === 'pending').length} pending · {tasks.filter(t => isOverdue(t)).length} overdue
           </p>
         </div>
-        <button onClick={() => { setForm({ status: 'pending', priority: 'medium', type: 'other' }); setSelectedTask(null); setShowModal(true) }} className="btn-gold">
+        <button onClick={() => { setForm({ status: 'pending', priority: 'medium', type: 'other' }); setSelectedTask(null); setShowModal(true) }} className="btn-gold" style={{ flexShrink: 0 }}>
           <Plus size={16} /> Add Task
         </button>
       </div>
 
       {/* Filter */}
-      <div className="flex gap-3 mb-6">
+      <div className="filter-tabs" style={{ marginBottom: isMobile ? 16 : 20 }}>
         {['pending', 'in_progress', 'completed', 'all'].map(f => (
-          <button key={f} onClick={() => setFilter(f)} className="text-xs px-4 py-2 capitalize tracking-wider" style={{
-            background: filter === f ? 'var(--gold)' : 'transparent',
-            color: filter === f ? 'var(--navy)' : 'var(--muted)',
-            border: `1px solid ${filter === f ? 'var(--gold)' : 'rgba(201,168,76,0.15)'}`,
-            cursor: 'pointer', fontFamily: 'var(--sans)', letterSpacing: '0.1em'
-          }}>
-            {f.replace(/_/g, ' ')}
+          <button key={f} onClick={() => setFilter(f)} className={`filter-tab${filter === f ? ' active' : ''}`}>
+            {f.replace(/_/g, ' ').replace(/\b\w/g, c => c.toUpperCase())}
           </button>
         ))}
       </div>
@@ -96,9 +91,10 @@ export default function TasksModule({ profile }: TasksModuleProps) {
       {loading ? (
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : tasks.length === 0 ? (
-        <div className="crm-card p-16 text-center">
-          <CheckSquare size={32} style={{ color: 'rgba(248,245,240,0.15)', margin: '0 auto 12px' }} />
-          <p className="serif text-2xl font-light mb-3" style={{ color: 'var(--muted)' }}>No tasks found</p>
+        <div className="card empty-state">
+          <div className="empty-icon"><CheckSquare size={20} /></div>
+          <p className="empty-title">No tasks found</p>
+          <p className="empty-sub" style={{ marginBottom: 16 }}>Add your first task to stay on top of your workflow</p>
           <button onClick={() => { setForm({ status: 'pending', priority: 'medium', type: 'other' }); setSelectedTask(null); setShowModal(true) }} className="btn-gold">Add Task</button>
         </div>
       ) : (
@@ -115,7 +111,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between gap-3">
-                  <p className={`text-sm font-medium ${task.status === 'completed' ? 'line-through' : ''}`} style={{ color: 'var(--white)' }}>
+                  <p className={`text-sm font-medium ${task.status === 'completed' ? 'line-through' : ''}`} style={{ color: 'var(--text)' }}>
                     {task.title}
                   </p>
                   <div className="flex items-center gap-2 flex-shrink-0">
@@ -133,7 +129,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
                       {task.priority}
                     </span>
                     <span className="text-xs px-2 py-0.5 capitalize" style={{
-                      background: 'rgba(255,255,255,0.04)', color: 'var(--muted)',
+                      background: 'var(--surface-2)', color: 'var(--text-3)',
                       border: '1px solid rgba(255,255,255,0.06)', fontSize: '0.65rem'
                     }}>
                       {task.type?.replace(/_/g, ' ')}
@@ -142,7 +138,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
                 </div>
 
                 {task.description && (
-                  <p className="text-xs mt-1" style={{ color: 'var(--muted)' }}>{task.description}</p>
+                  <p className="text-xs mt-1" style={{ color: 'var(--text-3)' }}>{task.description}</p>
                 )}
 
                 <div className="flex items-center gap-4 mt-2">
@@ -155,12 +151,12 @@ export default function TasksModule({ profile }: TasksModuleProps) {
                     </div>
                   )}
                   {task.contacts && (
-                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                    <span className="text-xs" style={{ color: 'var(--text-3)' }}>
                       Contact: {task.contacts.first_name} {task.contacts.last_name}
                     </span>
                   )}
                   {task.profiles && (
-                    <span className="text-xs" style={{ color: 'var(--muted)' }}>
+                    <span className="text-xs" style={{ color: 'var(--text-3)' }}>
                       Assigned: {task.profiles.full_name}
                     </span>
                   )}
@@ -180,30 +176,30 @@ export default function TasksModule({ profile }: TasksModuleProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="crm-card overflow-y-auto" style={{ width: '90%', maxWidth: 560, maxHeight: '90vh' }}>
-            <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+          <div className="modal" style={{ width: "90%", maxWidth: 560, maxHeight: "92vh", display: "flex", flexDirection: "column" }}>
+            <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedTask ? 'Edit' : 'New'} Task</p>
-                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--white)' }}>{selectedTask ? 'Update Task' : 'Create Task'}</h2>
+                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--text)' }}>{selectedTask ? 'Update Task' : 'Create Task'}</h2>
               </div>
-              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}><X size={20} /></button>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer' }}><X size={20} /></button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="modal-body" style={{ flex: 1, overflowY: "auto" }}>
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Title *</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Title *</label>
                 <input className="crm-input" value={form.title || ''} onChange={e => setForm({...form, title: e.target.value})} placeholder="Task title" />
               </div>
 
-              <div className="grid grid-cols-3 gap-4">
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "repeat(3,1fr)", gap: 12 }}>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Type</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Type</label>
                   <select className="crm-select" value={form.type || 'other'} onChange={e => setForm({...form, type: e.target.value})}>
                     {TASK_TYPES.map(t => <option key={t} value={t}>{t.replace(/_/g, ' ')}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Priority</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Priority</label>
                   <select className="crm-select" value={form.priority || 'medium'} onChange={e => setForm({...form, priority: e.target.value})}>
                     <option value="low">Low</option>
                     <option value="medium">Medium</option>
@@ -212,7 +208,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Status</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Status</label>
                   <select className="crm-select" value={form.status || 'pending'} onChange={e => setForm({...form, status: e.target.value})}>
                     <option value="pending">Pending</option>
                     <option value="in_progress">In Progress</option>
@@ -222,13 +218,13 @@ export default function TasksModule({ profile }: TasksModuleProps) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Due Date</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Due Date</label>
                   <input type="datetime-local" className="crm-input" value={form.due_date ? form.due_date.slice(0, 16) : ''} onChange={e => setForm({...form, due_date: e.target.value})} />
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Assign To</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Assign To</label>
                   <select className="crm-select" value={form.assigned_to || ''} onChange={e => setForm({...form, assigned_to: e.target.value})}>
                     <option value="">Select agent</option>
                     {agents.map(a => <option key={a.id} value={a.id}>{a.full_name}</option>)}
@@ -237,7 +233,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
               </div>
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Related Contact</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Related Contact</label>
                 <select className="crm-select" value={form.contact_id || ''} onChange={e => setForm({...form, contact_id: e.target.value})}>
                   <option value="">None</option>
                   {contacts.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name}</option>)}
@@ -245,12 +241,12 @@ export default function TasksModule({ profile }: TasksModuleProps) {
               </div>
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Description</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Description</label>
                 <textarea className="crm-input" rows={3} value={form.description || ''} onChange={e => setForm({...form, description: e.target.value})} placeholder="Task details..." />
               </div>
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-3" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+            <div className="modal-footer" style={{ borderColor: 'var(--border)' }}>
               <button onClick={() => setShowModal(false)} className="btn-ghost">Cancel</button>
               <button onClick={saveTask} className="btn-gold" disabled={saving}>
                 {saving ? 'Saving...' : selectedTask ? 'Update Task' : 'Create Task'}

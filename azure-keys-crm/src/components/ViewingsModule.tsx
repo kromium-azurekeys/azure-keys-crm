@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
-import { Plus, X, Calendar, Clock, MapPin, Star } from 'lucide-react'
+import { Plus, X, Calendar, Clock, Star } from 'lucide-react'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 interface ViewingsModuleProps { profile: Profile | null }
 
@@ -12,6 +13,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export default function ViewingsModule({ profile }: ViewingsModuleProps) {
+  const isMobile = useIsMobile()
   const [viewings, setViewings] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -72,30 +74,23 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
   }
 
   return (
-    <div className="p-8 animate-fade-up">
-      <div className="flex items-start justify-between mb-8">
+    <div className="animate-fade-up" style={{ padding: isMobile ? '16px' : '28px 32px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: isMobile ? 16 : 24 }}>
         <div>
-          <p className="text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)' }}>Scheduling</p>
-          <h1 className="serif text-4xl font-light" style={{ color: 'var(--white)' }}>
-            Property <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Viewings</em>
-          </h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>{viewings.length} viewings</p>
+          <p className="page-label">Scheduling</p>
+          <h1 className="page-title">Property <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Viewings</em></h1>
+          <p className="page-sub">{viewings.length} viewings</p>
         </div>
-        <button onClick={() => { setForm({ status: 'scheduled', location_type: 'in_person', duration_minutes: 60 }); setSelectedViewing(null); setShowModal(true) }} className="btn-gold">
-          <Plus size={16} /> Schedule Viewing
+        <button onClick={() => { setForm({ status: 'scheduled', location_type: 'in_person', duration_minutes: 60 }); setSelectedViewing(null); setShowModal(true) }} className="btn-gold" style={{ flexShrink: 0 }}>
+          <Plus size={16} /> {isMobile ? 'Schedule' : 'Schedule Viewing'}
         </button>
       </div>
 
       {/* Filter tabs */}
-      <div className="flex gap-3 mb-6">
+      <div className="filter-tabs" style={{ marginBottom: isMobile ? 16 : 20 }}>
         {['upcoming', 'past', 'all'].map(f => (
-          <button key={f} onClick={() => setFilter(f)} className="text-xs px-4 py-2 capitalize tracking-wider" style={{
-            background: filter === f ? 'var(--gold)' : 'transparent',
-            color: filter === f ? 'var(--navy)' : 'var(--muted)',
-            border: `1px solid ${filter === f ? 'var(--gold)' : 'rgba(201,168,76,0.15)'}`,
-            cursor: 'pointer', fontFamily: 'var(--sans)', letterSpacing: '0.1em'
-          }}>
-            {f}
+          <button key={f} onClick={() => setFilter(f)} className={`filter-tab${filter === f ? ' active' : ''}`}>
+            {f.charAt(0).toUpperCase() + f.slice(1)}
           </button>
         ))}
       </div>
@@ -103,21 +98,22 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
       {loading ? (
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : viewings.length === 0 ? (
-        <div className="crm-card p-16 text-center">
-          <Calendar size={32} style={{ color: 'rgba(248,245,240,0.15)', margin: '0 auto 12px' }} />
-          <p className="serif text-2xl font-light mb-3" style={{ color: 'var(--muted)' }}>No viewings {filter}</p>
+        <div className="card empty-state">
+          <div className="empty-icon"><Calendar size={20} /></div>
+          <p className="empty-title">No viewings {filter}</p>
+          <p className="empty-sub" style={{ marginBottom: 16 }}>Schedule your first property viewing to get started</p>
           <button onClick={() => { setForm({ status: 'scheduled', location_type: 'in_person', duration_minutes: 60 }); setSelectedViewing(null); setShowModal(true) }} className="btn-gold">
             Schedule First Viewing
           </button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
           {viewings.map(v => (
-            <div key={v.id} className="crm-card p-5 cursor-pointer" onClick={() => { setForm(v); setSelectedViewing(v); setShowModal(true) }}>
+            <div key={v.id} className="card" style={{ padding: isMobile ? 14 : 20, cursor:"pointer" }} onClick={() => { setForm(v); setSelectedViewing(v); setShowModal(true) }}>
               <div className="flex items-start justify-between mb-3">
                 <div>
-                  <p className="serif text-lg font-light" style={{ color: 'var(--white)' }}>{v.properties?.title || 'Property'}</p>
-                  <p className="text-xs mt-0.5" style={{ color: 'var(--muted)' }}>
+                  <p className="serif text-lg font-light" style={{ color: 'var(--text)' }}>{v.properties?.title || 'Property'}</p>
+                  <p className="text-xs mt-0.5" style={{ color: 'var(--text-3)' }}>
                     {v.properties?.city ? `${v.properties.city} · ` : ''}
                     {v.contacts?.first_name} {v.contacts?.last_name}
                   </p>
@@ -135,23 +131,23 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
               <div className="flex gap-4 mb-3">
                 <div className="flex items-center gap-2">
                   <Calendar size={13} style={{ color: 'var(--gold)' }} />
-                  <span className="text-xs" style={{ color: 'var(--white)' }}>
+                  <span className="text-xs" style={{ color: 'var(--text)' }}>
                     {new Date(v.scheduled_at).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock size={13} style={{ color: 'var(--gold)' }} />
-                  <span className="text-xs" style={{ color: 'var(--white)' }}>
+                  <span className="text-xs" style={{ color: 'var(--text)' }}>
                     {new Date(v.scheduled_at).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-xs" style={{ color: 'var(--muted)' }}>{v.duration_minutes}min</span>
+                  <span className="text-xs" style={{ color: 'var(--text-3)' }}>{v.duration_minutes}min</span>
                 </div>
               </div>
 
               <div className="flex items-center justify-between">
-                <p className="text-xs" style={{ color: 'var(--muted)' }}>Agent: {v.profiles?.full_name || 'TBD'}</p>
+                <p className="text-xs" style={{ color: 'var(--text-3)' }}>Agent: {v.profiles?.full_name || 'TBD'}</p>
 
                 {/* Quick status buttons */}
                 {v.status === 'scheduled' && (
@@ -188,28 +184,28 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="crm-card overflow-y-auto" style={{ width: '90%', maxWidth: 600, maxHeight: '90vh' }}>
-            <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+          <div className="modal" style={{ width: "90%", maxWidth: 600, maxHeight: "92vh", display: "flex", flexDirection: "column" }}>
+            <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedViewing ? 'Edit' : 'Schedule'} Viewing</p>
-                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--white)' }}>
+                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--text)' }}>
                   {selectedViewing ? 'Update Viewing' : 'New Viewing'}
                 </h2>
               </div>
-              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}><X size={20} /></button>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer' }}><X size={20} /></button>
             </div>
 
-            <div className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="modal-body" style={{ flex: 1, overflowY: "auto" }}>
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Property *</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Property *</label>
                   <select className="crm-select" value={form.property_id || ''} onChange={e => setForm({...form, property_id: e.target.value})}>
                     <option value="">Select property</option>
                     {properties.map(p => <option key={p.id} value={p.id}>{p.title}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Contact *</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Contact *</label>
                   <select className="crm-select" value={form.contact_id || ''} onChange={e => setForm({...form, contact_id: e.target.value})}>
                     <option value="">Select contact</option>
                     {contacts.map(c => <option key={c.id} value={c.id}>{c.first_name} {c.last_name}</option>)}
@@ -217,26 +213,26 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Date & Time *</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Date & Time *</label>
                   <input type="datetime-local" className="crm-input" value={form.scheduled_at ? form.scheduled_at.slice(0, 16) : ''} onChange={e => setForm({...form, scheduled_at: e.target.value})} />
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Duration (minutes)</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Duration (minutes)</label>
                   <input type="number" className="crm-input" value={form.duration_minutes || 60} onChange={e => setForm({...form, duration_minutes: Number(e.target.value)})} />
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Status</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Status</label>
                   <select className="crm-select" value={form.status || 'scheduled'} onChange={e => setForm({...form, status: e.target.value})}>
                     {Object.keys(STATUS_COLORS).map(s => <option key={s} value={s}>{s.replace(/_/g, ' ')}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Type</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Type</label>
                   <select className="crm-select" value={form.location_type || 'in_person'} onChange={e => setForm({...form, location_type: e.target.value})}>
                     <option value="in_person">In Person</option>
                     <option value="virtual">Virtual</option>
@@ -245,7 +241,7 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
               </div>
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Agent</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Agent</label>
                 <select className="crm-select" value={form.agent_id || ''} onChange={e => setForm({...form, agent_id: e.target.value})}>
                   <option value="">Select agent</option>
                   {agents.map(a => <option key={a.id} value={a.id}>{a.full_name}</option>)}
@@ -254,7 +250,7 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
 
               {form.location_type === 'virtual' && (
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Virtual Meeting Link</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Virtual Meeting Link</label>
                   <input className="crm-input" value={form.virtual_link || ''} onChange={e => setForm({...form, virtual_link: e.target.value})} placeholder="https://meet.google.com/..." />
                 </div>
               )}
@@ -262,23 +258,23 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
               {selectedViewing && (
                 <>
                   <div>
-                    <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Client Feedback</label>
+                    <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Client Feedback</label>
                     <textarea className="crm-input" rows={2} value={form.feedback || ''} onChange={e => setForm({...form, feedback: e.target.value})} placeholder="Client feedback after viewing..." />
                   </div>
                   <div>
-                    <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Rating (1-5)</label>
+                    <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Rating (1-5)</label>
                     <input type="number" min="1" max="5" className="crm-input" value={form.rating || ''} onChange={e => setForm({...form, rating: Number(e.target.value)})} />
                   </div>
                 </>
               )}
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Notes</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Notes</label>
                 <textarea className="crm-input" rows={2} value={form.notes || ''} onChange={e => setForm({...form, notes: e.target.value})} placeholder="Internal notes..." />
               </div>
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-3" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+            <div className="modal-footer" style={{ borderColor: 'var(--border)' }}>
               <button onClick={() => setShowModal(false)} className="btn-ghost">Cancel</button>
               <button onClick={saveViewing} className="btn-gold" disabled={saving}>
                 {saving ? 'Saving...' : selectedViewing ? 'Update' : 'Schedule Viewing'}

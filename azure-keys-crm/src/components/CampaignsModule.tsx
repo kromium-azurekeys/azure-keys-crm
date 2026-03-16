@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, Mail, MessageSquare, Zap, Send, BarChart2 } from 'lucide-react'
+import { useIsMobile } from '@/hooks/useIsMobile'
 
 interface CampaignsModuleProps { profile: Profile | null }
 
@@ -12,6 +13,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export default function CampaignsModule({ profile }: CampaignsModuleProps) {
+  const isMobile = useIsMobile()
   const [campaigns, setCampaigns] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
@@ -49,22 +51,20 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
   }
 
   return (
-    <div className="p-8 animate-fade-up">
-      <div className="flex items-start justify-between mb-8">
+    <div className="animate-fade-up" style={{ padding: isMobile ? '16px' : '28px 32px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: isMobile ? 16 : 24 }}>
         <div>
-          <p className="text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--gold)' }}>Marketing</p>
-          <h1 className="serif text-4xl font-light" style={{ color: 'var(--white)' }}>
-            Campaign <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Automation</em>
-          </h1>
-          <p className="text-sm mt-1" style={{ color: 'var(--muted)' }}>{campaigns.length} campaigns</p>
+          <p className="page-label">Marketing</p>
+          <h1 className="page-title">Campaign <em style={{ fontStyle: 'italic', color: 'var(--gold-light)' }}>Automation</em></h1>
+          <p className="page-sub">{campaigns.length} campaigns</p>
         </div>
-        <button onClick={() => { setForm({ type: 'email', status: 'draft' }); setSelectedCampaign(null); setShowModal(true) }} className="btn-gold">
-          <Plus size={16} /> New Campaign
+        <button onClick={() => { setForm({ type: 'email', status: 'draft' }); setSelectedCampaign(null); setShowModal(true) }} className="btn-gold" style={{ flexShrink: 0 }}>
+          <Plus size={16} /> {isMobile ? 'New' : 'New Campaign'}
         </button>
       </div>
 
       {/* Stats overview */}
-      <div className="grid grid-cols-4 gap-4 mb-8">
+      <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)", gap: isMobile ? 10 : 16, marginBottom: isMobile ? 16 : 32 }}>
         {[
           { label: 'Total Campaigns', value: campaigns.length, color: 'var(--gold)' },
           { label: 'Active', value: campaigns.filter(c => c.status === 'active').length, color: '#4a8c4a' },
@@ -73,7 +73,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
         ].map(({ label, value, color }) => (
           <div key={label} className="metric-card">
             <p className="serif text-3xl font-light mb-1" style={{ color }}>{value}</p>
-            <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--muted)', fontSize: '0.65rem' }}>{label}</p>
+            <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--text-3)', fontSize: '0.65rem' }}>{label}</p>
           </div>
         ))}
       </div>
@@ -81,26 +81,27 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
       {loading ? (
         <div className="flex justify-center py-20"><div className="spinner" /></div>
       ) : campaigns.length === 0 ? (
-        <div className="crm-card p-16 text-center">
-          <Mail size={32} style={{ color: 'rgba(248,245,240,0.15)', margin: '0 auto 12px' }} />
-          <p className="serif text-2xl font-light mb-3" style={{ color: 'var(--muted)' }}>No campaigns yet</p>
+        <div className="card empty-state">
+          <div className="empty-icon"><Mail size={20} /></div>
+          <p className="empty-title">No campaigns yet</p>
+          <p className="empty-sub" style={{ marginBottom: 16 }}>Create your first campaign to start reaching clients</p>
           <button onClick={() => { setForm({ type: 'email', status: 'draft' }); setSelectedCampaign(null); setShowModal(true) }} className="btn-gold">Create First Campaign</button>
         </div>
       ) : (
-        <div className="grid grid-cols-2 gap-4">
+        <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
           {campaigns.map(c => {
             const Icon = TYPE_ICONS[c.type] || Mail
             const sColor = STATUS_COLORS[c.status] || '#888'
             return (
-              <div key={c.id} className="crm-card p-5 cursor-pointer" onClick={() => { setForm(c); setSelectedCampaign(c); setShowModal(true) }}>
+              <div key={c.id} className="card" style={{ padding: isMobile ? 14 : 20, cursor:"pointer" }} onClick={() => { setForm(c); setSelectedCampaign(c); setShowModal(true) }}>
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-3">
                     <div className="p-2" style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
                       <Icon size={16} style={{ color: 'var(--gold)' }} />
                     </div>
                     <div>
-                      <p className="font-medium" style={{ color: 'var(--white)' }}>{c.name}</p>
-                      <p className="text-xs capitalize" style={{ color: 'var(--muted)' }}>{c.type} campaign</p>
+                      <p className="font-medium" style={{ color: 'var(--text)' }}>{c.name}</p>
+                      <p className="text-xs capitalize" style={{ color: 'var(--text-3)' }}>{c.type} campaign</p>
                     </div>
                   </div>
                   <span className="text-xs px-2 py-1 capitalize" style={{
@@ -112,11 +113,11 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                 </div>
 
                 {c.subject && (
-                  <p className="text-xs mb-3 truncate" style={{ color: 'var(--muted)' }}>Subject: {c.subject}</p>
+                  <p className="text-xs mb-3 truncate" style={{ color: 'var(--text-3)' }}>Subject: {c.subject}</p>
                 )}
 
                 {/* Stats */}
-                <div className="grid grid-cols-4 gap-2 mb-3 p-3" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
+                <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr 1fr" : "repeat(4,1fr)", gap: 8, marginBottom: 12, padding: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.04)' }}>
                   {[
                     { label: 'Sent', value: c.stats?.sent || 0 },
                     { label: 'Opened', value: c.stats?.opened || 0 },
@@ -124,14 +125,14 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                     { label: 'Unsub', value: c.stats?.unsubscribed || 0 },
                   ].map(({ label, value }) => (
                     <div key={label} className="text-center">
-                      <p className="text-sm font-medium" style={{ color: 'var(--white)' }}>{value}</p>
-                      <p style={{ color: 'var(--muted)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</p>
+                      <p className="text-sm font-medium" style={{ color: 'var(--text)' }}>{value}</p>
+                      <p style={{ color: 'var(--text-3)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</p>
                     </div>
                   ))}
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <p className="text-xs" style={{ color: 'var(--muted)' }}>
+                  <p className="text-xs" style={{ color: 'var(--text-3)' }}>
                     {c.scheduled_at ? `Scheduled: ${new Date(c.scheduled_at).toLocaleDateString()}` : `Created: ${new Date(c.created_at).toLocaleDateString()}`}
                   </p>
                   <div className="flex gap-2" onClick={e => e.stopPropagation()}>
@@ -155,24 +156,24 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="crm-card overflow-y-auto" style={{ width: '90%', maxWidth: 640, maxHeight: '90vh' }}>
-            <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+          <div className="modal" style={{ width: "90%", maxWidth: 640, maxHeight: "92vh", display: "flex", flexDirection: "column" }}>
+            <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedCampaign ? 'Edit' : 'New'} Campaign</p>
-                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--white)' }}>{selectedCampaign ? selectedCampaign.name : 'Create Campaign'}</h2>
+                <h2 className="serif text-2xl font-light mt-1" style={{ color: 'var(--text)' }}>{selectedCampaign ? selectedCampaign.name : 'Create Campaign'}</h2>
               </div>
-              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--muted)', cursor: 'pointer' }}><X size={20} /></button>
+              <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer' }}><X size={20} /></button>
             </div>
 
-            <div className="p-6 space-y-4">
+            <div className="modal-body" style={{ flex: 1, overflowY: "auto" }}>
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Campaign Name *</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Campaign Name *</label>
                 <input className="crm-input" value={form.name || ''} onChange={e => setForm({...form, name: e.target.value})} placeholder="e.g. Q1 Luxury Buyers Drip" />
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
+              <div style={{ display:"grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: isMobile ? 12 : 16 }}>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Type</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Type</label>
                   <select className="crm-select" value={form.type || 'email'} onChange={e => setForm({...form, type: e.target.value})}>
                     <option value="email">Email</option>
                     <option value="sms">SMS</option>
@@ -181,7 +182,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Status</label>
+                  <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Status</label>
                   <select className="crm-select" value={form.status || 'draft'} onChange={e => setForm({...form, status: e.target.value})}>
                     <option value="draft">Draft</option>
                     <option value="scheduled">Scheduled</option>
@@ -193,22 +194,22 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
               </div>
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Subject Line</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Subject Line</label>
                 <input className="crm-input" value={form.subject || ''} onChange={e => setForm({...form, subject: e.target.value})} placeholder="Your exceptional Caribbean home awaits..." />
               </div>
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Campaign Content</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Campaign Content</label>
                 <textarea className="crm-input" rows={6} value={form.content || ''} onChange={e => setForm({...form, content: e.target.value})} placeholder="Write your campaign message here..." />
               </div>
 
               <div>
-                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--muted)' }}>Scheduled Date/Time</label>
+                <label className="block text-xs tracking-widest uppercase mb-2" style={{ color: 'var(--text-3)' }}>Scheduled Date/Time</label>
                 <input type="datetime-local" className="crm-input" value={form.scheduled_at ? form.scheduled_at.slice(0, 16) : ''} onChange={e => setForm({...form, scheduled_at: e.target.value})} />
               </div>
             </div>
 
-            <div className="p-6 border-t flex justify-end gap-3" style={{ borderColor: 'rgba(201,168,76,0.1)' }}>
+            <div className="modal-footer" style={{ borderColor: 'var(--border)' }}>
               <button onClick={() => setShowModal(false)} className="btn-ghost">Cancel</button>
               <button onClick={saveCampaign} className="btn-gold" disabled={saving}>
                 {saving ? 'Saving...' : selectedCampaign ? 'Update Campaign' : 'Create Campaign'}
