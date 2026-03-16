@@ -135,7 +135,7 @@ export default function ConciergeModule({ profile }: ConciergeModuleProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="modal" style={{ width: '90%', maxWidth: 560, maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: '90%', maxWidth: 560, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>

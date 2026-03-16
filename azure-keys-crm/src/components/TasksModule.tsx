@@ -176,7 +176,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="modal" style={{ width: "90%", maxWidth: 560, maxHeight: "92vh", display: "flex", flexDirection: "column" }}>
+          <div className="modal" style={{ width: "90%", maxWidth: 560, display: "flex", flexDirection: "column" }}>
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
                 <p className="text-xs tracking-widest uppercase" style={{ color: 'var(--gold)' }}>{selectedTask ? 'Edit' : 'New'} Task</p>

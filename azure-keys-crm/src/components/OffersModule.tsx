@@ -155,7 +155,7 @@ export default function OffersModule({ profile }: OffersModuleProps) {
 
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="modal" style={{ width: '90%', maxWidth: 580, maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: '90%', maxWidth: 580, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div><p className="page-label">{selectedOffer ? 'Edit' : 'Record'} Offer</p><h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400 }}>{selectedOffer ? 'Update Offer' : 'New Offer'}</h2></div>

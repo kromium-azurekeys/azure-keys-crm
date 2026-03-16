@@ -170,7 +170,7 @@ export default function ContactsModule({ profile }: ContactsModuleProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
-          <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth:580, maxHeight:'92vh', display:'flex', flexDirection:'column' }}>
+          <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth:580, display:'flex', flexDirection:'column' }}>
             <div className="modal-header">
               <p className="page-label">{selectedContact?'Edit':'New'} Contact</p>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>

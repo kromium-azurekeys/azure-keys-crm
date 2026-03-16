@@ -172,7 +172,7 @@ export default function DeveloperPipeline({ profile }: DeveloperPipelineProps) {
       {/* Modal */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="modal" style={{ width: '90%', maxWidth: 580, maxHeight: '90vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: '90%', maxWidth: 580, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>

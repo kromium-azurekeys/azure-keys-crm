@@ -160,7 +160,7 @@ export default function CBIModule({ profile }: CBIModuleProps) {
 
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="modal" style={{ width: '90%', maxWidth: 600, maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: '90%', maxWidth: 600, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div><p className="page-label">{selected ? 'Edit' : 'New'} Application</p><h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400 }}>CBI / SERP Application</h2></div>
@@ -192,7 +192,7 @@ export default function CBIModule({ profile }: CBIModuleProps) {
 
       {showRefModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowRefModal(false)}>
-          <div className="modal" style={{ width: '95%', maxWidth: 800, maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: '95%', maxWidth: 800, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div><p className="page-label">Reference</p><h2 style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400 }}>Caribbean CBI/SERP Guide</h2></div>

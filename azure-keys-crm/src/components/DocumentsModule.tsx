@@ -436,7 +436,7 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
       {/* ── Upload / Edit Modal ─────────────────────────────── */}
       {showModal && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
-          <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 600, maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 600, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <p className="page-label">{selectedDoc ? 'Edit' : 'Upload'} Document</p>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -553,7 +553,7 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
       {/* ── View Modal ──────────────────────────────────────── */}
       {showViewModal && selectedDoc && (
         <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowViewModal(false)}>
-          <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 520, maxHeight: '92vh', display: 'flex', flexDirection: 'column' }}>
+          <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 520, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <p className="page-label">Document Details</p>
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 12 }}>
