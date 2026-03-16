@@ -12,47 +12,47 @@ interface ModalProps {
 export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps) {
   const isMobile = useIsMobile()
 
-  // Lock body scroll while open
+  // On desktop only: lock body scroll. Never on iOS — it breaks overlay scroll.
   useEffect(() => {
+    if (isMobile) return
     const prev = document.body.style.overflow
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = prev }
-  }, [])
+  }, [isMobile])
 
   if (isMobile) {
     return (
-      // Overlay: fills screen, scrolls vertically, content sticks to bottom
+      // The overlay IS the scroll container — no flex, no justify, just scroll
       <div
-        onClick={e => e.target === e.currentTarget && onClose()}
         style={{
-          position: 'fixed', inset: 0,
+          position: 'fixed',
+          inset: 0,
+          zIndex: 50,
+          overflowY: 'scroll',
+          // iOS requires -webkit prefix for momentum scrolling
+          WebkitOverflowScrolling: 'touch' as any,
           background: 'rgba(17,24,39,0.6)',
           backdropFilter: 'blur(4px)',
-          zIndex: 50,
-          // Scroll container — overflow:auto here, NOT on the modal
-          overflowY: 'auto',
-          WebkitOverflowScrolling: 'touch' as any,
-          // Push content to bottom using padding at top
-          paddingTop: '15vh',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'flex-end',
         }}
       >
-        {/* Sheet — grows to full content height, no clipping */}
+        {/* Spacer pushes sheet to bottom on short content, tappable to close */}
         <div
-          onClick={e => e.stopPropagation()}
+          onClick={onClose}
+          style={{ minHeight: '15vh' }}
+        />
+
+        {/* Sheet — no maxHeight, no overflow:hidden, grows to full content */}
+        <div
           style={{
             width: '100%',
             background: 'var(--surface)',
             borderRadius: '20px 20px 0 0',
-            boxShadow: '0 -4px 32px rgba(0,0,0,0.3)',
-            animation: 'slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1)',
-            // No maxHeight, no overflow:hidden — content is fully visible
-            flexShrink: 0,
+            boxShadow: '0 -8px 40px rgba(0,0,0,0.4)',
+            // Ensure it reaches the very bottom of the screen
+            paddingBottom: 'env(safe-area-inset-bottom)',
           }}
         >
-          {/* Drag handle pill */}
+          {/* Drag handle */}
           <div style={{
             width: 40, height: 4, borderRadius: 2,
             background: 'var(--border-strong)',
@@ -64,16 +64,17 @@ export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps)
     )
   }
 
-  // Desktop: overlay scrolls, modal is a plain centered block
+  // Desktop: overlay scrolls, modal centered block, no height cap
   return (
     <div
       onClick={e => e.target === e.currentTarget && onClose()}
       style={{
-        position: 'fixed', inset: 0,
-        background: 'rgba(17,24,39,0.55)',
-        backdropFilter: 'blur(4px)',
+        position: 'fixed',
+        inset: 0,
         zIndex: 50,
         overflowY: 'auto',
+        background: 'rgba(17,24,39,0.55)',
+        backdropFilter: 'blur(4px)',
         padding: '32px 20px 48px',
       }}
     >
