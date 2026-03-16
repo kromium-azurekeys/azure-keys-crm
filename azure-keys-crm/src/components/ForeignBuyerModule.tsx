@@ -8,6 +8,7 @@ import {
   X, Plus, Edit2, Check, Info, ArrowRight
 } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface ForeignBuyerModuleProps { profile: any }
 
@@ -591,7 +592,7 @@ export default function ForeignBuyerModule({ profile }: ForeignBuyerModuleProps)
 
       {/* ── Edit Profile Modal ───────────────────────────────── */}
       {showModal && selected && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 580, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <p className="page-label">Foreign Buyer Profile</p>
@@ -721,7 +722,7 @@ export default function ForeignBuyerModule({ profile }: ForeignBuyerModuleProps)
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

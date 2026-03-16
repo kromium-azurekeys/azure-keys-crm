@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Property, Profile } from '@/lib/supabase'
 import { Search, Plus, X, Bed, Bath, Square, Eye } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface PropertiesModuleProps { profile: Profile | null }
 
@@ -143,7 +144,7 @@ export default function PropertiesModule({ profile }: PropertiesModuleProps) {
       </div>
 
       {showModal && (
-        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth:680, display:'flex', flexDirection:'column' }}>
             <div className="modal-header">
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
@@ -190,7 +191,7 @@ export default function PropertiesModule({ profile }: PropertiesModuleProps) {
               <button className="btn-gold" onClick={saveProp} disabled={saving||!form.title}>{saving?'Saving...':selectedProp?'Update Listing':'Add Listing'}</button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

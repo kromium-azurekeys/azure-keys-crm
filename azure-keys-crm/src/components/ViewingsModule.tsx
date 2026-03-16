@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, Calendar, Clock, Star } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface ViewingsModuleProps { profile: Profile | null }
 
@@ -183,7 +184,7 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: "90%", maxWidth: 600, display: "flex", flexDirection: "column" }}>
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
@@ -281,7 +282,7 @@ export default function ViewingsModule({ profile }: ViewingsModuleProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

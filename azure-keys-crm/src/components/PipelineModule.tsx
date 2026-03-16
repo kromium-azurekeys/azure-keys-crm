@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Deal, Profile } from '@/lib/supabase'
 import { Plus, X, User, Home, DollarSign } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface PipelineModuleProps { profile: Profile | null }
 
@@ -169,7 +170,7 @@ export default function PipelineModule({ profile }: PipelineModuleProps) {
       </div>
 
       {showModal && (
-        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width:'90%', maxWidth:580, display:'flex', flexDirection:'column' }}>
             <div className="modal-header">
               <p className="page-label">{selectedDeal?'Edit':'New'} Deal</p>
@@ -208,7 +209,7 @@ export default function PipelineModule({ profile }: PipelineModuleProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

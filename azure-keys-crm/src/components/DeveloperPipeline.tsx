@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 import { supabase } from '@/lib/supabase'
 import { Plus, X, Home, CheckCircle, Circle } from 'lucide-react'
 
@@ -171,7 +172,7 @@ export default function DeveloperPipeline({ profile }: DeveloperPipelineProps) {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: '90%', maxWidth: 580, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -249,7 +250,7 @@ export default function DeveloperPipeline({ profile }: DeveloperPipelineProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

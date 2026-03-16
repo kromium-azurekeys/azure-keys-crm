@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, FileText } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface OffersModuleProps { profile: Profile | null }
 
@@ -154,7 +155,7 @@ export default function OffersModule({ profile }: OffersModuleProps) {
       </div>
 
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: '90%', maxWidth: 580, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -190,7 +191,7 @@ export default function OffersModule({ profile }: OffersModuleProps) {
               <button className="btn-gold" onClick={saveOffer} disabled={saving || !form.property_id || !form.buyer_contact_id}>{saving ? 'Saving...' : selectedOffer ? 'Update Offer' : 'Record Offer'}</button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

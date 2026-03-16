@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, CheckSquare, Circle, Clock, AlertCircle } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface TasksModuleProps { profile: Profile | null }
 
@@ -175,7 +176,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: "90%", maxWidth: 560, display: "flex", flexDirection: "column" }}>
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
@@ -253,7 +254,7 @@ export default function TasksModule({ profile }: TasksModuleProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

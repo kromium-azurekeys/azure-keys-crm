@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Contact, Profile } from '@/lib/supabase'
 import { Search, Plus, X, Phone, Mail, User } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface ContactsModuleProps { profile: Profile | null }
 
@@ -169,7 +170,7 @@ export default function ContactsModule({ profile }: ContactsModuleProps) {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={e=>e.target===e.currentTarget&&setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth:580, display:'flex', flexDirection:'column' }}>
             <div className="modal-header">
               <p className="page-label">{selectedContact?'Edit':'New'} Contact</p>
@@ -217,7 +218,7 @@ export default function ContactsModule({ profile }: ContactsModuleProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

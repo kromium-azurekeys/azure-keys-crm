@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, Mail, MessageSquare, Zap, Send, BarChart2 } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface CampaignsModuleProps { profile: Profile | null }
 
@@ -155,7 +156,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
 
       {/* Modal */}
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: "90%", maxWidth: 640, display: "flex", flexDirection: "column" }}>
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
@@ -216,7 +217,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase, Profile } from '@/lib/supabase'
 import { Plus, X, Globe } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface CBIModuleProps { profile: Profile | null }
 
@@ -159,7 +160,7 @@ export default function CBIModule({ profile }: CBIModuleProps) {
       </div>
 
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: '90%', maxWidth: 600, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -187,11 +188,11 @@ export default function CBIModule({ profile }: CBIModuleProps) {
               <button className="btn-gold" onClick={save} disabled={saving || !form.contact_id}>{saving ? 'Saving...' : selected ? 'Update' : 'Create Application'}</button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
 
       {showRefModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowRefModal(false)}>
+        <Modal onClose={() => setShowRefModal(false)}>
           <div className="modal" style={{ width: '95%', maxWidth: 800, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -238,7 +239,7 @@ export default function CBIModule({ profile }: CBIModuleProps) {
             </div>
             <div className="modal-footer"><button className="btn-ghost" onClick={() => setShowRefModal(false)}>Close</button></div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )

@@ -3,7 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* ── Light mode (default) ── */
 :root {
   --bg: #f7f8fa;
@@ -290,40 +289,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); font
     padding: 16px !important;
   }
 
-  /* ── Modals → bottom sheet on mobile ── */
-  .modal-overlay {
-    padding: 0 !important;
-    overflow-y: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    display: flex !important;
-    align-items: flex-end !important;
-    justify-content: center !important;
-    padding-top: 15vh !important;
-  }
-  .modal {
-    width: 100% !important;
-    max-width: 100% !important;
-    border-radius: 20px 20px 0 0 !important;
-    margin: 0 !important;
-    overflow: visible !important;
-    height: auto !important;
-    max-height: none !important;
-    animation: slideUp 0.28s cubic-bezier(0.32, 0.72, 0, 1) !important;
-  }
-  .modal-header {
-    padding: 16px 16px 12px !important;
-    border-radius: 20px 20px 0 0 !important;
-  }
-  .modal-body {
-    padding: 16px !important;
-    overflow-y: visible !important;
-    max-height: none !important;
-    flex: none !important;
-  }
-  .modal-footer {
-    padding: 12px 16px !important;
-    padding-bottom: max(20px, env(safe-area-inset-bottom)) !important;
-  }
+  /* ── Modals handled by Modal.tsx component ── */
 
   /* ── Tables — prevent overflow ── */
   .crm-table-wrap {

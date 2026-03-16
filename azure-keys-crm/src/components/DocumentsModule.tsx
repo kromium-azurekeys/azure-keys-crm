@@ -8,6 +8,7 @@ import {
   AlertCircle, Building2, Users, GitBranch
 } from 'lucide-react'
 import { useIsMobile } from '@/hooks/useIsMobile'
+import Modal from '@/components/Modal'
 
 interface DocumentsModuleProps { profile: any }
 
@@ -435,7 +436,7 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
 
       {/* ── Upload / Edit Modal ─────────────────────────────── */}
       {showModal && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowModal(false)}>
+        <Modal onClose={() => setShowModal(false)}>
           <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 600, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <p className="page-label">{selectedDoc ? 'Edit' : 'Upload'} Document</p>
@@ -547,12 +548,12 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
               </button>
             </div>
           </div>
-        </div>
+        </Modal>
       )}
 
       {/* ── View Modal ──────────────────────────────────────── */}
       {showViewModal && selectedDoc && (
-        <div className="modal-overlay" onClick={e => e.target === e.currentTarget && setShowViewModal(false)}>
+        <Modal onClose={() => setShowViewModal(false)}>
           <div className="modal" style={{ width: isMobile ? '100%' : '90%', maxWidth: 520, display: 'flex', flexDirection: 'column' }}>
             <div className="modal-header">
               <p className="page-label">Document Details</p>
@@ -638,7 +639,7 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
               )}
             </div>
           </div>
-        </div>
+        </Modal>
       )}
     </div>
   )
