@@ -8,7 +8,7 @@ import { BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, R
 interface ReportsModuleProps { profile: Profile | null }
 
 const GOLD = '#c9a84c'
-const AZURE = '#1e7ec8'
+const AZURE = '#c9a96e'  // remapped to gold
 const OCEAN = '#1a4a7a'
 
 export default function ReportsModule({ profile }: ReportsModuleProps) {
@@ -101,7 +101,7 @@ export default function ReportsModule({ profile }: ReportsModuleProps) {
     return `$${v}`
   }
 
-  const PIE_COLORS = [GOLD, AZURE, '#c97a1e', OCEAN, '#4a7a4a', '#7a4a8c', '#8c4a4a', '#4a7a8c']
+  const PIE_COLORS = ['#c9a96e', '#e8c98a', '#a07840', '#d4af6a', '#8b6730', '#f0d898', '#6b4f28', '#c4975a']
 
   if (loading) return <div className="flex justify-center py-20"><div className="spinner" /></div>
 
@@ -119,7 +119,7 @@ export default function ReportsModule({ profile }: ReportsModuleProps) {
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4,1fr)', gap: isMobile ? 10 : 16, marginBottom: isMobile ? 12 : 20 }}>
         {[
           { label: 'Total Revenue', value: formatCurrency(stats.totalRevenue), sub: 'Closed deals', color: GOLD },
-          { label: 'Pipeline Value', value: formatCurrency(stats.pipeline), sub: 'Open deals', color: AZURE },
+          { label: 'Pipeline Value', value: formatCurrency(stats.pipeline), sub: 'Open deals', color: 'var(--gold)' },
           { label: 'Deals Won', value: stats.wonDeals, sub: 'Closed won', color: '#4a8c4a' },
           { label: 'Conversion Rate', value: `${stats.wonDeals + (stats.pipeline > 0 ? 1 : 0) > 0 ? Math.round(stats.wonDeals / Math.max(stats.wonDeals + 1, 1) * 100) : 0}%`, sub: 'Win rate', color: '#9a7ac8' },
         ].map(({ label, value, sub, color }) => (
@@ -156,7 +156,7 @@ export default function ReportsModule({ profile }: ReportsModuleProps) {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" tick={{ fill: 'var(--text-4)', fontSize: 10 }} />
                 <YAxis type="category" dataKey="name" tick={{ fill: 'var(--text-3)', fontSize: 10 }} width={isMobile ? 80 : 100} />
-                <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }} />
+                <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }} />
                 <Bar dataKey="value" fill={GOLD} />
               </BarChart>
             </ResponsiveContainer>
@@ -173,7 +173,7 @@ export default function ReportsModule({ profile }: ReportsModuleProps) {
                   <Pie data={contactsBySource} cx="50%" cy="50%" outerRadius={75} dataKey="value">
                     {contactsBySource.map((_, i) => <Cell key={i} fill={PIE_COLORS[i % PIE_COLORS.length]} />)}
                   </Pie>
-                  <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8 }} />
+                  <Tooltip contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }} />
                 </PieChart>
               </ResponsiveContainer>
               <div style={{ flex: 1, minWidth: 100 }}>

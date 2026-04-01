@@ -129,7 +129,7 @@ export default function YieldCalculator({ profile }: YieldCalculatorProps) {
                     <tr key={row.year}>
                       <td style={{ fontWeight: 500 }}>Yr {row.year}</td>
                       <td style={{ color: 'var(--green)' }}>{fmt(row.income)}</td>
-                      <td style={{ color: 'var(--azure)' }}>{fmt(row.propValue)}</td>
+                      <td style={{ color: 'var(--gold)' }}>{fmt(row.propValue)}</td>
                       <td style={{ color: 'var(--gold)', fontWeight: 600 }}>{fmt(row.cumulative + (row.propValue - inputs.purchasePrice))}</td>
                     </tr>
                   ))}

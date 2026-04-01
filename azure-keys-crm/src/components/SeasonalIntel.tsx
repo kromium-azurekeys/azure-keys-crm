@@ -132,7 +132,7 @@ export default function SeasonalIntel({ profile }: SeasonalIntelProps) {
                   <div style={{ flex: 1, height: 8, background: 'var(--surface-2)', borderRadius: 4, overflow: 'hidden' }}>
                     <div style={{
                       height: '100%', borderRadius: 4, width: `${d.occupancy}%`,
-                      background: d.occupancy >= 75 ? 'var(--gold)' : d.occupancy >= 55 ? 'var(--azure)' : 'var(--border-strong)',
+                      background: d.occupancy >= 75 ? 'var(--gold)' : d.occupancy >= 55 ? 'var(--orange)' : 'var(--border-strong)',
                       transition: 'width 0.4s ease'
                     }} />
                   </div>

@@ -20,6 +20,7 @@ import ConciergeModule from '@/components/ConciergeModule'
 import DeveloperPipeline from '@/components/DeveloperPipeline'
 import ReferralNetwork from '@/components/ReferralNetwork'
 import SeasonalIntel from '@/components/SeasonalIntel'
+import WebsiteEnquiriesModule from '@/components/WebsiteEnquiriesModule'
 import DocumentsModule from '@/components/DocumentsModule'
 import ForeignBuyerModule from '@/components/ForeignBuyerModule'
 import { Key, Menu } from 'lucide-react'
@@ -28,7 +29,7 @@ import { useIsMobile } from '@/hooks/useIsMobile'
 export type CRMSection = 
   'dashboard' | 'contacts' | 'pipeline' | 'properties' | 'viewings' | 
   'offers' | 'tasks' | 'campaigns' | 'reports' |
-  'cbi' | 'yield' | 'matching' | 'concierge' | 'developer' | 'referrals' | 'seasonal' |
+  'cbi' | 'yield' | 'matching' | 'concierge' | 'developer' | 'referrals' | 'seasonal' | 'website_enquiries' |
   'documents' | 'foreignbuyer'
 
 const SIDEBAR_W = 220

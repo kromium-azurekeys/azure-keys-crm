@@ -10,7 +10,7 @@ interface OffersModuleProps { profile: Profile | null }
 
 const STATUS_COLORS: Record<string, { bg: string; color: string; badge: string }> = {
   draft: { bg: 'rgba(136,136,136,0.1)', color: '#888', badge: 'badge-gray' },
-  submitted: { bg: 'rgba(30,126,200,0.1)', color: '#1e7ec8', badge: 'badge-blue' },
+  submitted: { bg: 'var(--gold-pale)', color: 'var(--gold)', badge: 'badge-gold' },
   countered: { bg: 'rgba(201,168,76,0.1)', color: '#c9a84c', badge: 'badge-gold' },
   accepted: { bg: 'rgba(74,140,74,0.15)', color: '#4a8c4a', badge: 'badge-green' },
   rejected: { bg: 'rgba(200,60,60,0.1)', color: '#ff6b6b', badge: 'badge-red' },

@@ -9,7 +9,7 @@ import Modal from '@/components/Modal'
 interface ViewingsModuleProps { profile: Profile | null }
 
 const STATUS_COLORS: Record<string, string> = {
-  scheduled: '#1e7ec8', confirmed: '#4a8c4a', completed: '#6a4a8c',
+  scheduled: '#c9a96e', confirmed: '#4a8c4a', completed: '#6a4a8c',
   cancelled: '#8c4a4a', no_show: '#c97a1e'
 }
 

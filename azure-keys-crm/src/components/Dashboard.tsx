@@ -12,7 +12,7 @@ interface DashboardProps {
   onNavigate: (section: CRMSection) => void
 }
 
-const AZURE = '#1a6fb5'
+const GOLD = '#c9a96e'
 
 export default function Dashboard({ profile, onNavigate }: DashboardProps) {
   const isMobile = useIsMobile()
@@ -81,7 +81,7 @@ export default function Dashboard({ profile, onNavigate }: DashboardProps) {
       {/* KPI Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4,1fr)', gap: isMobile ? 10 : 16, marginBottom: 14 }}>
         {[
-          { label: 'Contacts', value: stats.contacts, icon: Users, color: 'var(--azure)', bg: 'var(--azure-pale)', action: 'contacts' as CRMSection },
+          { label: 'Contacts', value: stats.contacts, icon: Users, color: 'var(--gold)', bg: 'var(--gold-pale)', action: 'contacts' as CRMSection },
           { label: 'Active Listings', value: stats.properties, icon: Building2, color: 'var(--gold)', bg: 'var(--gold-pale)', action: 'properties' as CRMSection },
           { label: 'Pipeline', value: fmt(stats.pipeline), icon: TrendingUp, color: '#16a34a', bg: 'var(--green-pale)', action: 'pipeline' as CRMSection },
           { label: 'Revenue', value: fmt(stats.totalValue), icon: DollarSign, color: 'var(--purple)', bg: 'var(--purple-pale)', action: 'reports' as CRMSection },
@@ -103,7 +103,7 @@ export default function Dashboard({ profile, onNavigate }: DashboardProps) {
       <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4,1fr)', gap: isMobile ? 10 : 16, marginBottom: 20 }}>
         {[
           { label: 'Pending Tasks', value: stats.activeTasks, color: 'var(--orange)', bg: 'var(--orange-pale)', icon: CheckSquare },
-          { label: 'Viewings This Week', value: stats.viewingsThisWeek, color: 'var(--azure)', bg: 'var(--azure-pale)', icon: Calendar },
+          { label: 'Viewings This Week', value: stats.viewingsThisWeek, color: 'var(--gold)', bg: 'var(--gold-pale)', icon: Calendar },
           { label: 'Deals Won', value: stats.wonDeals, color: 'var(--green)', bg: 'var(--green-pale)', icon: TrendingUp },
           { label: 'Total Deals', value: stats.deals, color: 'var(--purple)', bg: 'var(--purple-pale)', icon: Activity },
         ].map(({ label, value, color, bg, icon: Icon }) => (
@@ -126,16 +126,16 @@ export default function Dashboard({ profile, onNavigate }: DashboardProps) {
           <ResponsiveContainer width="100%" height={isMobile ? 140 : 180}>
             <AreaChart data={monthlyData}>
               <defs>
-                <linearGradient id="azureGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={AZURE} stopOpacity={0.15} />
-                  <stop offset="95%" stopColor={AZURE} stopOpacity={0} />
+                <linearGradient id="goldGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={GOLD} stopOpacity={0.15} />
+                  <stop offset="95%" stopColor={GOLD} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="month" tick={{ fill: 'var(--text-4)', fontSize: 11 }} axisLine={false} tickLine={false} />
               <YAxis tickFormatter={v => `$${(v / 1000).toFixed(0)}K`} tick={{ fill: 'var(--text-4)', fontSize: 11 }} axisLine={false} tickLine={false} width={isMobile ? 38 : 50} />
-              <Tooltip formatter={(v: any) => [`$${(v / 1000).toFixed(0)}K`, 'Revenue']} contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontFamily: 'var(--sans)', fontSize: 13 }} />
-              <Area type="monotone" dataKey="revenue" stroke={AZURE} fill="url(#azureGrad)" strokeWidth={2} />
+              <Tooltip formatter={(v: any) => [`$${(v / 1000).toFixed(0)}K`, 'Revenue']} contentStyle={{ background: 'var(--surface)', border: '1px solid var(--border)', borderRadius: 8, fontSize: 12 }} />
+              <Area type="monotone" dataKey="revenue" stroke={GOLD} fill="url(#goldGrad)" strokeWidth={2} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -146,7 +146,7 @@ export default function Dashboard({ profile, onNavigate }: DashboardProps) {
         <div className="card">
           <div style={{ padding: '14px 18px 10px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>Upcoming Viewings</p>
-            <button onClick={() => onNavigate('viewings')} style={{ fontSize: 12, color: 'var(--azure)', background: 'none', border: 'none', cursor: 'pointer' }}>View all →</button>
+            <button onClick={() => onNavigate('viewings')} style={{ fontSize: 12, color: 'var(--gold)', background: 'none', border: 'none', cursor: 'pointer' }}>View all →</button>
           </div>
           {upcomingViewings.length === 0 ? (
             <div className="empty-state">
@@ -159,7 +159,7 @@ export default function Dashboard({ profile, onNavigate }: DashboardProps) {
               {upcomingViewings.map(v => (
                 <div key={v.id} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 18px', borderBottom: '1px solid var(--border)' }}>
                   <div style={{ textAlign: 'center', width: 36, flexShrink: 0 }}>
-                    <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--azure)', lineHeight: 1 }}>{new Date(v.scheduled_at).getDate()}</p>
+                    <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--gold)', lineHeight: 1 }}>{new Date(v.scheduled_at).getDate()}</p>
                     <p style={{ fontSize: 9, color: 'var(--text-4)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{new Date(v.scheduled_at).toLocaleDateString('en', { month: 'short' })}</p>
                   </div>
                   <div style={{ width: 1, height: 28, background: 'var(--border)' }} />
@@ -187,7 +187,7 @@ export default function Dashboard({ profile, onNavigate }: DashboardProps) {
             <div style={{ padding: '6px 0' }}>
               {recentActivities.map((a, idx) => (
                 <div key={a.id} style={{ display: 'flex', gap: 12, padding: '9px 18px', borderBottom: idx < recentActivities.length - 1 ? '1px solid var(--border)' : 'none' }}>
-                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--azure)', marginTop: 5, flexShrink: 0 }} />
+                  <div style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--gold)', marginTop: 5, flexShrink: 0 }} />
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontSize: 13, color: 'var(--text-2)' }}>{a.description}</p>
                     <p style={{ fontSize: 11, color: 'var(--text-4)', marginTop: 2 }}>{a.profiles?.full_name || 'System'} · {new Date(a.created_at).toLocaleDateString()}</p>

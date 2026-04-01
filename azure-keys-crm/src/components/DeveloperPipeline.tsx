@@ -142,7 +142,7 @@ export default function DeveloperPipeline({ profile }: DeveloperPipelineProps) {
                         {[
                           { label: 'Total Units', value: proj.units_total || 0, color: 'var(--text)' },
                           { label: 'Reserved', value: proj.units_reserved || 0, color: 'var(--green)' },
-                          { label: 'Available', value: proj.units_available || (proj.units_total - proj.units_reserved), color: 'var(--azure)' },
+                          { label: 'Available', value: proj.units_available || (proj.units_total - proj.units_reserved), color: 'var(--gold)' },
                         ].map(s => (
                           <div key={s.label} className="metric-card" style={{ padding: '12px 16px' }}>
                             <p style={{ fontFamily: 'var(--serif)', fontSize: '1.5rem', fontWeight: 600, color: s.color }}>{s.value}</p>

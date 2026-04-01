@@ -76,7 +76,7 @@ export default function PipelineModule({ profile }: PipelineModuleProps) {
         <div>
           <p className="page-label">Sales</p>
           <h1 className="page-title">Deal <em>Pipeline</em></h1>
-          <p className="page-sub">{deals.length} deals · Pipeline: <strong style={{color:'var(--azure)'}}>{fmt(totalPipeline)}</strong></p>
+          <p className="page-sub">{deals.length} deals · Pipeline: <strong style={{color:'var(--gold)'}}>{fmt(totalPipeline)}</strong></p>
         </div>
         <button className="btn-primary" onClick={()=>{setForm({stage:'new_lead',deal_type:'buyer',priority:'medium',probability:20});setSelectedDeal(null);setShowModal(true)}}>
           <Plus size={15}/>New Deal

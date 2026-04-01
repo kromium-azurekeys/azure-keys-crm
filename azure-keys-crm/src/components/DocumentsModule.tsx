@@ -49,12 +49,12 @@ const catIcon: Record<string, any> = {
 
 const catColor: Record<string, string> = {
   contract: 'var(--green)',
-  agreement: 'var(--azure)',
+  agreement: 'var(--gold)',
   report: 'var(--purple)',
   identity: 'var(--orange)',
   financial: 'var(--gold)',
   legal: 'var(--red)',
-  marketing: 'var(--azure)',
+  marketing: 'var(--gold)',
   other: 'var(--text-3)',
 }
 
@@ -416,7 +416,7 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
                         </td>
                         <td onClick={e => e.stopPropagation()}>
                           <div style={{ display: 'flex', gap: 6 }}>
-                            <button onClick={() => openView(doc)} title="View" style={{ color: 'var(--azure)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: 3, borderRadius: 4 }}><Eye size={15} /></button>
+                            <button onClick={() => openView(doc)} title="View" style={{ color: 'var(--gold)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: 3, borderRadius: 4 }}><Eye size={15} /></button>
                             {doc.file_path && (
                               <button onClick={() => getDownloadUrl(doc.file_path!)} title="Download" style={{ color: 'var(--gold)', background: 'none', border: 'none', cursor: 'pointer', display: 'flex', padding: 3, borderRadius: 4 }}><Download size={15} /></button>
                             )}
@@ -527,8 +527,8 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
 
               {/* Note about storage */}
               <div style={{ marginTop: 16, padding: '10px 14px', borderRadius: 8, background: 'var(--azure-pale)', border: '1px solid var(--azure-border)', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
-                <AlertCircle size={14} color="var(--azure)" style={{ flexShrink: 0, marginTop: 1 }} />
-                <p style={{ fontSize: 12, color: 'var(--azure)', lineHeight: 1.5 }}>
+                <AlertCircle size={14} color="var(--gold)" style={{ flexShrink: 0, marginTop: 1 }} />
+                <p style={{ fontSize: 12, color: 'var(--gold)', lineHeight: 1.5 }}>
                   Files are uploaded to Supabase Storage. Ensure a <strong>documents</strong> bucket exists in your Supabase project with appropriate policies. Document records are saved regardless.
                 </p>
               </div>
@@ -595,7 +595,7 @@ export default function DocumentsModule({ profile }: DocumentsModuleProps) {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
                     {selectedDoc.contacts && (
                       <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '10px 14px', borderRadius: 8, background: 'var(--surface-2)', border: '1px solid var(--border)' }}>
-                        <Users size={14} color="var(--azure)" />
+                        <Users size={14} color="var(--gold)" />
                         <div>
                           <p style={{ fontSize: 11, color: 'var(--text-4)', marginBottom: 1 }}>Contact</p>
                           <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text)' }}>{selectedDoc.contacts.first_name} {selectedDoc.contacts.last_name}</p>

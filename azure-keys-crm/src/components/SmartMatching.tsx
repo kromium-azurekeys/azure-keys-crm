@@ -158,7 +158,7 @@ export default function SmartMatching({ profile }: SmartMatchingProps) {
                 </select>
               </div>
             </div>
-            <div style={{ padding: '12px', background: 'var(--azure-pale)', borderRadius: 8, fontSize: 12, color: 'var(--azure)', border: '1px solid var(--azure-border)' }}>
+            <div style={{ padding: '12px', background: 'var(--azure-pale)', borderRadius: 8, fontSize: 12, color: 'var(--gold)', border: '1px solid var(--azure-border)' }}>
               ⚡ Matches update in real-time as you adjust criteria
             </div>
           </div>

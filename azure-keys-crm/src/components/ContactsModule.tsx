@@ -121,7 +121,7 @@ export default function ContactsModule({ profile }: ContactsModuleProps) {
                   <span className={`badge ${stageBadge[c.lifecycle_stage]||'badge-gray'}`}>{(c.lifecycle_stage||'').replace('_',' ')}</span>
                   {c.budget_min||c.budget_max ? <span style={{ fontSize:11, color:'var(--text-3)', marginLeft:'auto' }}>${((c.budget_min||0)/1000).toFixed(0)}K–${((c.budget_max||0)/1000).toFixed(0)}K</span> : null}
                   <div style={{ display:'flex', gap:10, marginLeft:'auto' }} onClick={e=>e.stopPropagation()}>
-                    {c.phone && <a href={`tel:${c.phone}`} style={{ color:'var(--azure)', display:'flex' }}><Phone size={16}/></a>}
+                    {c.phone && <a href={`tel:${c.phone}`} style={{ color:'var(--gold)', display:'flex' }}><Phone size={16}/></a>}
                     {c.email && <a href={`mailto:${c.email}`} style={{ color:'var(--gold)', display:'flex' }}><Mail size={16}/></a>}
                   </div>
                 </div>
@@ -154,7 +154,7 @@ export default function ContactsModule({ profile }: ContactsModuleProps) {
                     <td style={{ color:'var(--text-3)' }}>{(c as any).profiles?.full_name||'Unassigned'}</td>
                     <td onClick={e=>e.stopPropagation()}>
                       <div style={{ display:'flex', gap:6 }}>
-                        {c.phone && <a href={`tel:${c.phone}`} title="Call" style={{ color:'var(--azure)', display:'flex' }}><Phone size={15}/></a>}
+                        {c.phone && <a href={`tel:${c.phone}`} title="Call" style={{ color:'var(--gold)', display:'flex' }}><Phone size={15}/></a>}
                         {c.email && <a href={`mailto:${c.email}`} title="Email" style={{ color:'var(--gold)', display:'flex' }}><Mail size={15}/></a>}
                         <button onClick={()=>deleteContact(c.id)} style={{ color:'var(--text-4)', background:'none', border:'none', cursor:'pointer', display:'flex' }}><X size={15}/></button>
                       </div>

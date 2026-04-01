@@ -10,7 +10,7 @@ interface CampaignsModuleProps { profile: Profile | null }
 
 const TYPE_ICONS: Record<string, any> = { email: Mail, sms: MessageSquare, drip: Zap, newsletter: Send }
 const STATUS_COLORS: Record<string, string> = {
-  draft: '#888', scheduled: '#1e7ec8', active: '#4a8c4a', paused: '#c9a84c', completed: '#6a4a8c'
+  draft: '#888', scheduled: '#c9a96e', active: '#4a8c4a', paused: '#c9a84c', completed: '#6a4a8c'
 }
 
 export default function CampaignsModule({ profile }: CampaignsModuleProps) {
@@ -69,7 +69,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
         {[
           { label: 'Total Campaigns', value: campaigns.length, color: 'var(--gold)' },
           { label: 'Active', value: campaigns.filter(c => c.status === 'active').length, color: '#4a8c4a' },
-          { label: 'Scheduled', value: campaigns.filter(c => c.status === 'scheduled').length, color: '#1e7ec8' },
+          { label: 'Scheduled', value: campaigns.filter(c => c.status === 'scheduled').length, color: 'var(--gold)' },
           { label: 'Completed', value: campaigns.filter(c => c.status === 'completed').length, color: '#6a4a8c' },
         ].map(({ label, value, color }) => (
           <div key={label} className="metric-card">

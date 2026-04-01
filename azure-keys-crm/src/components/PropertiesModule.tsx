@@ -12,7 +12,7 @@ const TYPES = ['villa','condo','townhouse','land','commercial','estate','penthou
 const STATUSES = ['active','pending','under_contract','sold','withdrawn','coming_soon']
 
 const statusColors: Record<string,string> = {
-  active:'#16a34a', pending:'#d97706', under_contract:'#1a6fb5',
+  active:'#16a34a', pending:'#d97706', under_contract:'var(--gold)',
   sold:'#7c3aed', withdrawn:'#dc2626', coming_soon:'#0d1f3c'
 }
 

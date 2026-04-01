@@ -42,7 +42,7 @@ export default function LoginPage() {
         }
         .login-brand {
           width: 42%;
-          background: var(--navy);
+          background: #0a0d12;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -96,7 +96,7 @@ export default function LoginPage() {
           {/* Grid bg */}
           <div style={{
             position: 'absolute', inset: 0,
-            backgroundImage: 'linear-gradient(rgba(184,149,63,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(184,149,63,0.06) 1px, transparent 1px)',
+            backgroundImage: 'linear-gradient(rgba(201,169,110,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(201,169,110,0.05) 1px, transparent 1px)',
             backgroundSize: '50px 50px',
             pointerEvents: 'none',
           }}/>
@@ -193,7 +193,7 @@ export default function LoginPage() {
                 {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
               </span>
               <button onClick={() => { setMode(mode==='login'?'signup':'login'); setError('') }}
-                style={{ fontSize: 13, color: 'var(--azure)', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>
+                style={{ fontSize: 13, color: 'var(--gold)', fontWeight: 500, background: 'none', border: 'none', cursor: 'pointer' }}>
                 {mode === 'login' ? 'Sign up' : 'Sign in'}
               </button>
             </div>

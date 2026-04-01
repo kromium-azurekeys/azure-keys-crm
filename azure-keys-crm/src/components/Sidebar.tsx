@@ -5,7 +5,7 @@ import { CRMSection } from '@/app/crm/page'
 import {
   LayoutDashboard, Users, GitBranch, Building2, Calendar,
   FileText, CheckSquare, Mail, BarChart3, LogOut, Key,
-  Globe, Calculator, Zap, Sparkles, Network, Sun, Home, X, Menu,
+  Globe, Calculator, Zap, Sparkles, Network, Sun, Home, X, Globe2,
   FolderOpen, DollarSign, Moon
 } from 'lucide-react'
 
@@ -48,6 +48,12 @@ const navGroups = [
     ]
   },
   {
+    label: 'Website',
+    items: [
+      { id: 'website_enquiries' as CRMSection, label: 'Website Enquiries', icon: Globe2 },
+    ]
+  },
+  {
     label: 'Caribbean Intel',
     items: [
       { id: 'cbi' as CRMSection, label: 'CBI / SERP', icon: Globe },
@@ -67,10 +73,8 @@ export default function Sidebar({ activeSection, onNavigate, profile, onSignOut,
     ? profile.full_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
     : '?'
 
-  // Dark mode state — read from localStorage / html attribute
   const [isDark, setIsDark] = useState(false)
 
-  // Sync on mount
   useEffect(() => {
     const theme = document.documentElement.getAttribute('data-theme')
     setIsDark(theme === 'dark')
@@ -88,14 +92,23 @@ export default function Sidebar({ activeSection, onNavigate, profile, onSignOut,
     onClose?.()
   }
 
+  const SIDEBAR_BG   = '#0a0d12'
+  const BORDER_COLOR = 'rgba(201,169,110,0.15)'
+  const GOLD         = '#c9a96e'
+  const TEXT_DIM     = 'rgba(232,224,208,0.5)'
+  const TEXT_MID     = 'rgba(232,224,208,0.75)'
+  const TEXT_BRIGHT  = '#e8e0d0'
+  const ACTIVE_BG    = 'rgba(201,169,110,0.1)'
+
   return (
     <>
-      {/* Mobile overlay backdrop */}
+      {/* Mobile overlay */}
       <div
         onClick={onClose}
         style={{
           position: 'fixed', inset: 0,
-          background: 'rgba(0,0,0,0.45)',
+          background: 'rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(2px)',
           zIndex: 39,
           display: 'none',
         }}
@@ -107,98 +120,200 @@ export default function Sidebar({ activeSection, onNavigate, profile, onSignOut,
         style={{
           width: 220,
           height: '100vh',
-          background: 'var(--surface)',
-          borderRight: '1px solid var(--border)',
+          background: SIDEBAR_BG,
+          borderRight: `1px solid ${BORDER_COLOR}`,
           display: 'flex',
           flexDirection: 'column',
           position: 'fixed',
-          top: 0,
-          left: 0,
+          top: 0, left: 0,
           zIndex: 40,
           overflowY: 'auto',
           overflowX: 'hidden',
         }}
       >
         {/* Logo */}
-        <div style={{ padding: '16px 14px 14px', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexShrink: 0 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 28, height: 28, borderRadius: 7, background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <Key size={13} color="var(--gold)" />
+        <div style={{
+          padding: '18px 16px 14px',
+          borderBottom: `1px solid ${BORDER_COLOR}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          flexShrink: 0,
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              width: 30, height: 30, borderRadius: 6,
+              background: 'rgba(201,169,110,0.12)',
+              border: `1px solid rgba(201,169,110,0.3)`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
+            }}>
+              <Key size={13} color={GOLD} />
             </div>
             <div>
-              <p style={{ fontFamily: 'var(--serif)', fontSize: '1rem', fontWeight: 400, color: 'var(--text)', lineHeight: 1.1 }}>
-                Azure <span style={{ color: 'var(--gold)' }}>Keys</span>
+              <p style={{
+                fontFamily: 'var(--serif)', fontSize: '1rem',
+                fontWeight: 400, color: TEXT_BRIGHT, lineHeight: 1.15,
+              }}>
+                Azure <span style={{ color: GOLD, fontStyle: 'italic' }}>Keys</span>
               </p>
-              <p style={{ fontSize: '9px', color: 'var(--text-4)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>CRM</p>
+              <p style={{
+                fontSize: '8.5px', color: TEXT_DIM,
+                letterSpacing: '0.18em', textTransform: 'uppercase', marginTop: 1,
+              }}>
+                CRM Platform
+              </p>
             </div>
           </div>
-          {/* Close button — only visible on mobile */}
           <button
             onClick={onClose}
             className="sidebar-close-btn"
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-3)', display: 'none', padding: 4, borderRadius: 6, alignItems: 'center', justifyContent: 'center' }}
+            style={{
+              background: 'rgba(255,255,255,0.06)', border: `1px solid ${BORDER_COLOR}`,
+              cursor: 'pointer', color: TEXT_DIM,
+              display: 'none', padding: 5, borderRadius: 6,
+              alignItems: 'center', justifyContent: 'center',
+            }}
           >
-            <X size={16} />
+            <X size={14} />
           </button>
         </div>
 
         {/* Nav */}
-        <nav style={{ flex: 1, overflowY: 'auto', padding: '6px 0' }}>
+        <nav style={{ flex: 1, overflowY: 'auto', padding: '8px 0' }}>
           {navGroups.map(group => (
             <div key={group.label}>
-              <p className="section-label" style={{ padding: '0 16px' }}>{group.label}</p>
-              {group.items.map(({ id, label, icon: Icon }) => (
-                <button
-                  key={id}
-                  onClick={() => handleNav(id)}
-                  className={`nav-item${activeSection === id ? ' active' : ''}`}
-                  style={{ width: 'calc(100% - 12px)', margin: '1px 6px', display: 'flex', alignItems: 'center', gap: 8 }}
-                >
-                  <Icon size={14} style={{ flexShrink: 0 }} />
-                  <span style={{ fontSize: 12.5, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</span>
-                </button>
-              ))}
+              <p style={{
+                fontSize: '9.5px', letterSpacing: '0.14em',
+                textTransform: 'uppercase', color: TEXT_DIM,
+                fontWeight: 600, padding: '12px 16px 4px',
+                fontFamily: 'var(--sans)',
+              }}>
+                {group.label}
+              </p>
+              {group.items.map(({ id, label, icon: Icon }) => {
+                const isActive = activeSection === id
+                return (
+                  <button
+                    key={id}
+                    onClick={() => handleNav(id)}
+                    style={{
+                      width: 'calc(100% - 12px)',
+                      margin: '1px 6px',
+                      display: 'flex', alignItems: 'center', gap: 9,
+                      padding: '7px 10px',
+                      borderRadius: 6,
+                      background: isActive ? ACTIVE_BG : 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: isActive ? GOLD : TEXT_MID,
+                      fontFamily: 'var(--sans)',
+                      fontSize: 12.5,
+                      fontWeight: isActive ? 500 : 400,
+                      transition: 'all 0.13s ease',
+                      textAlign: 'left',
+                    }}
+                    onMouseOver={e => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'rgba(255,255,255,0.05)'
+                        e.currentTarget.style.color = TEXT_BRIGHT
+                      }
+                    }}
+                    onMouseOut={e => {
+                      if (!isActive) {
+                        e.currentTarget.style.background = 'transparent'
+                        e.currentTarget.style.color = TEXT_MID
+                      }
+                    }}
+                  >
+                    <Icon
+                      size={13}
+                      style={{ flexShrink: 0, color: isActive ? GOLD : 'inherit' }}
+                    />
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {label}
+                    </span>
+                    {isActive && (
+                      <div style={{
+                        marginLeft: 'auto', width: 4, height: 4,
+                        borderRadius: '50%', background: GOLD, flexShrink: 0,
+                      }} />
+                    )}
+                  </button>
+                )
+              })}
             </div>
           ))}
         </nav>
 
         {/* User + theme */}
-        <div style={{ padding: '10px 12px', borderTop: '1px solid var(--border)', flexShrink: 0 }}>
+        <div style={{ padding: '10px 12px', borderTop: `1px solid ${BORDER_COLOR}`, flexShrink: 0 }}>
           {/* Theme toggle */}
           <button
             onClick={toggleTheme}
             title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
             style={{
               width: '100%', display: 'flex', alignItems: 'center', gap: 9,
-              padding: '7px 10px', borderRadius: 8, marginBottom: 8,
-              background: 'var(--surface-2)', border: '1px solid var(--border)',
-              cursor: 'pointer', color: 'var(--text-3)', transition: 'all 0.15s',
+              padding: '7px 10px', borderRadius: 7, marginBottom: 8,
+              background: 'rgba(255,255,255,0.04)',
+              border: `1px solid ${BORDER_COLOR}`,
+              cursor: 'pointer', color: TEXT_DIM,
+              transition: 'all 0.15s',
+              fontFamily: 'var(--sans)',
             }}
-            onMouseOver={e => (e.currentTarget.style.color = 'var(--text)')}
-            onMouseOut={e => (e.currentTarget.style.color = 'var(--text-3)')}
+            onMouseOver={e => (e.currentTarget.style.color = TEXT_BRIGHT)}
+            onMouseOut={e => (e.currentTarget.style.color = TEXT_DIM)}
           >
-            {isDark ? <Sun size={14} color="var(--gold)" /> : <Moon size={14} />}
-            <span style={{ fontSize: 12, fontFamily: 'var(--sans)' }}>
+            {isDark
+              ? <Sun size={13} color={GOLD} />
+              : <Moon size={13} color={TEXT_DIM} />}
+            <span style={{ fontSize: 11.5, color: 'inherit' }}>
               {isDark ? 'Light mode' : 'Dark mode'}
             </span>
           </button>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: 9, padding: '8px 10px', borderRadius: 8, background: 'var(--surface-2)' }}>
-            <div style={{ width: 30, height: 30, borderRadius: '50%', background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--gold)', fontSize: '10px', fontWeight: 600, flexShrink: 0 }}>
+          {/* User card */}
+          <div style={{
+            display: 'flex', alignItems: 'center', gap: 9,
+            padding: '8px 10px', borderRadius: 7,
+            background: 'rgba(255,255,255,0.04)',
+            border: `1px solid ${BORDER_COLOR}`,
+          }}>
+            <div style={{
+              width: 30, height: 30, borderRadius: '50%',
+              background: 'rgba(201,169,110,0.15)',
+              border: `1.5px solid rgba(201,169,110,0.3)`,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: GOLD, fontSize: '10px', fontWeight: 600, flexShrink: 0,
+              fontFamily: 'var(--sans)',
+            }}>
               {initials}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <p style={{ fontSize: '12px', fontWeight: 500, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'var(--sans)' }}>{profile?.full_name || 'User'}</p>
-              <p style={{ fontSize: '10px', color: 'var(--gold)', textTransform: 'capitalize', fontFamily: 'var(--sans)' }}>{profile?.role || 'agent'}</p>
+              <p style={{
+                fontSize: '12px', fontWeight: 500, color: TEXT_BRIGHT,
+                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                fontFamily: 'var(--sans)',
+              }}>
+                {profile?.full_name || 'User'}
+              </p>
+              <p style={{
+                fontSize: '10px', color: GOLD,
+                textTransform: 'capitalize', fontFamily: 'var(--sans)',
+              }}>
+                {profile?.role || 'agent'}
+              </p>
             </div>
             <button
               onClick={onSignOut}
               title="Sign out"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-4)', padding: 3, borderRadius: 4, display: 'flex' }}
-              onMouseOver={e => (e.currentTarget.style.color = 'var(--red)')}
-              onMouseOut={e => (e.currentTarget.style.color = 'var(--text-4)')}
+              style={{
+                background: 'none', border: 'none', cursor: 'pointer',
+                color: TEXT_DIM, padding: 4, borderRadius: 4, display: 'flex',
+                transition: 'color 0.15s',
+              }}
+              onMouseOver={e => (e.currentTarget.style.color = '#f87171')}
+              onMouseOut={e => (e.currentTarget.style.color = TEXT_DIM)}
             >
-              <LogOut size={13} />
+              <LogOut size={12} />
             </button>
           </div>
         </div>

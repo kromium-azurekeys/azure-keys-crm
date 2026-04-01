@@ -226,7 +226,7 @@ export default function ForeignBuyerModule({ profile }: ForeignBuyerModuleProps)
       {/* KPI strip */}
       <div style={{ padding: isMobile ? '12px 16px' : '16px 32px', borderBottom: '1px solid var(--border)', background: 'var(--surface)', display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)', gap: 12 }}>
         {[
-          { label: 'International Buyers', value: contacts.length, icon: Globe, color: 'var(--azure)' },
+          { label: 'International Buyers', value: contacts.length, icon: Globe, color: 'var(--gold)' },
           { label: 'SOF Verified / Cleared', value: verifiedSof, icon: ShieldCheck, color: 'var(--green)' },
           { label: 'Passport Verified', value: withPassport, icon: FileText, color: 'var(--gold)' },
           { label: 'AML Flagged', value: amlFlagged, icon: AlertTriangle, color: amlFlagged > 0 ? 'var(--red)' : 'var(--text-4)' },
@@ -320,7 +320,7 @@ export default function ForeignBuyerModule({ profile }: ForeignBuyerModuleProps)
                   <div key={c.id} className="card" style={{ padding: isMobile ? '14px 16px' : '16px 20px' }}>
                     <div style={{ display: 'flex', alignItems: 'flex-start', gap: 12, justifyContent: 'space-between' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
-                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--azure-pale)', color: 'var(--azure)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, flexShrink: 0 }}>
+                        <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'var(--azure-pale)', color: 'var(--gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 700, flexShrink: 0 }}>
                           {c.first_name[0]}{c.last_name[0]}
                         </div>
                         <div style={{ flex: 1, minWidth: 0 }}>
