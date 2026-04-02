@@ -5,7 +5,7 @@ import { CRMSection } from '@/app/crm/page'
 import {
   LayoutDashboard, Users, GitBranch, Building2, Calendar,
   FileText, CheckSquare, Mail, BarChart3, LogOut, Key,
-  Globe, Calculator, Zap, Sparkles, Network, Sun, Home, X, Globe2,
+  Globe, Calculator, Zap, Sparkles, Network, Sun, Home, X, Globe2, BarChart2, Target, Heart, GitMerge,
   FolderOpen, DollarSign, Moon
 } from 'lucide-react'
 
@@ -27,6 +27,7 @@ const navGroups = [
     label: 'Sales',
     items: [
       { id: 'contacts' as CRMSection, label: 'Contacts', icon: Users },
+      { id: 'seller_leads' as CRMSection, label: 'Seller Leads', icon: Home },
       { id: 'pipeline' as CRMSection, label: 'Pipeline', icon: GitBranch },
       { id: 'offers' as CRMSection, label: 'Offers', icon: FileText },
     ]
@@ -51,6 +52,9 @@ const navGroups = [
     label: 'Website',
     items: [
       { id: 'website_enquiries' as CRMSection, label: 'Website Enquiries', icon: Globe2 },
+      { id: 'attribution' as CRMSection, label: 'Attribution & ROI', icon: BarChart2 },
+      { id: 'nurture' as CRMSection, label: 'Nurture Sequences', icon: GitMerge },
+      { id: 'property_interests' as CRMSection, label: 'Property Interests', icon: Heart },
     ]
   },
   {

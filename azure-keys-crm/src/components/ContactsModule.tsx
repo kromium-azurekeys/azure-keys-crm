@@ -9,7 +9,7 @@ import Modal from '@/components/Modal'
 interface ContactsModuleProps { profile: Profile | null }
 
 const LIFECYCLE_STAGES = ['prospect','qualified','active_buyer','under_contract','closed','retention']
-const SOURCES = ['website','referral','social_media','email_campaign','walk_in','phone','listing_portal','other']
+const SOURCES = ['website','referral','social_media','email_campaign','google_ads','meta_ads','instagram','walk_in','phone','listing_portal','other']
 const TYPES = ['lead','prospect','client','past_client','vendor']
 
 const typeBadge: Record<string,string> = { lead:'badge-blue', prospect:'badge-gold', client:'badge-green', past_client:'badge-gray', vendor:'badge-purple' }
@@ -206,6 +206,101 @@ export default function ContactsModule({ profile }: ContactsModuleProps) {
                 <div><label className="form-label">Budget Min ($)</label><input type="number" className="crm-input" value={form.budget_min||''} onChange={e=>setForm({...form,budget_min:Number(e.target.value)})} placeholder="500000"/></div>
                 <div><label className="form-label">Budget Max ($)</label><input type="number" className="crm-input" value={form.budget_max||''} onChange={e=>setForm({...form,budget_max:Number(e.target.value)})} placeholder="2000000"/></div>
               </div>
+
+              {/* Financial qualification — new lead gen fields */}
+              <div style={{ padding:'12px 14px', background:'var(--surface-2)', border:'1px solid var(--border)', borderRadius:8 }}>
+                <p style={{ fontSize:10, fontWeight:600, letterSpacing:'0.1em', textTransform:'uppercase', color:'var(--text-3)', marginBottom:12 }}>Financial Qualification</p>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
+                  <div>
+                    <label className="form-label">Financial Status</label>
+                    <div className="crm-select-wrap">
+                      <select className="crm-select" value={(form as any).financial_status||''} onChange={e=>setForm({...form, financial_status:e.target.value} as any)}>
+                        <option value="">Not specified</option>
+                        <option value="cash_buyer">Cash Buyer</option>
+                        <option value="pre_approved">Pre-Approved Mortgage</option>
+                        <option value="needs_approval">Needs Pre-Approval</option>
+                        <option value="needs_to_sell_first">Needs to Sell First</option>
+                        <option value="exploring_financing">Exploring Financing</option>
+                        <option value="just_browsing">Just Browsing</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="form-label">Timeline</label>
+                    <div className="crm-select-wrap">
+                      <select className="crm-select" value={(form as any).timeline||''} onChange={e=>setForm({...form, timeline:e.target.value} as any)}>
+                        <option value="">Not specified</option>
+                        <option value="1_3_months">1–3 months</option>
+                        <option value="3_6_months">3–6 months</option>
+                        <option value="6_plus_months">6+ months</option>
+                        <option value="just_curious">Just Curious</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="form-label">Lead Tier</label>
+                    <div className="crm-select-wrap">
+                      <select className="crm-select" value={(form as any).lead_tier||''} onChange={e=>setForm({...form, lead_tier:e.target.value} as any)}>
+                        <option value="">Not scored</option>
+                        <option value="hot">Hot (85–100)</option>
+                        <option value="warm">Warm (65–84)</option>
+                        <option value="cold">Cold (45–64)</option>
+                        <option value="unqualified">Unqualified (&lt;45)</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="form-label">Contact Role</label>
+                    <div className="crm-select-wrap">
+                      <select className="crm-select" value={(form as any).contact_role||'buyer'} onChange={e=>setForm({...form, contact_role:e.target.value} as any)}>
+                        <option value="buyer">Buyer</option>
+                        <option value="seller">Seller</option>
+                        <option value="both">Buyer & Seller</option>
+                        <option value="vendor">Vendor</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="form-label">Preferred Contact</label>
+                    <div className="crm-select-wrap">
+                      <select className="crm-select" value={(form as any).preferred_contact_method||'email'} onChange={e=>setForm({...form, preferred_contact_method:e.target.value} as any)}>
+                        <option value="email">Email</option>
+                        <option value="phone">Phone</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="sms">SMS</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="form-label">WhatsApp Number</label>
+                    <input className="crm-input" value={(form as any).whatsapp_number||''} onChange={e=>setForm({...form, whatsapp_number:e.target.value} as any)} placeholder="+1 345 555 0100"/>
+                  </div>
+                </div>
+                <div style={{ display:'flex', gap:20, marginTop:12, flexWrap:'wrap' }}>
+                  {[
+                    { key:'is_first_time_buyer', label:'First-Time Buyer' },
+                    { key:'is_investor', label:'Investor' },
+                    { key:'is_relocating', label:'Relocating' },
+                  ].map(({ key, label }) => (
+                    <label key={key} style={{ display:'flex', alignItems:'center', gap:7, fontSize:13, color:'var(--text-2)', cursor:'pointer' }}>
+                      <input type="checkbox" checked={!!(form as any)[key]} onChange={e=>setForm({...form, [key]:e.target.checked} as any)}
+                        style={{ accentColor:'var(--gold)', width:14, height:14 }} />
+                      {label}
+                    </label>
+                  ))}
+                </div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginTop:12 }}>
+                  <div>
+                    <label className="form-label">Country of Residence</label>
+                    <input className="crm-input" value={(form as any).country_of_residence||''} onChange={e=>setForm({...form, country_of_residence:e.target.value} as any)} placeholder="United States"/>
+                  </div>
+                  <div>
+                    <label className="form-label">UTM Campaign</label>
+                    <input className="crm-input" value={(form as any).utm_campaign||''} onChange={e=>setForm({...form, utm_campaign:e.target.value} as any)} placeholder="e.g. Luxury Buyer — Google"/>
+                  </div>
+                </div>
+              </div>
+
               <div style={{ marginTop:14 }}>
                 <label className="form-label">Notes</label>
                 <textarea className="crm-input" rows={3} value={form.notes||''} onChange={e=>setForm({...form,notes:e.target.value})} placeholder="Additional notes..."/>

@@ -21,6 +21,10 @@ import DeveloperPipeline from '@/components/DeveloperPipeline'
 import ReferralNetwork from '@/components/ReferralNetwork'
 import SeasonalIntel from '@/components/SeasonalIntel'
 import WebsiteEnquiriesModule from '@/components/WebsiteEnquiriesModule'
+import AttributionModule from '@/components/AttributionModule'
+import SellerLeadsModule from '@/components/SellerLeadsModule'
+import PropertyInterestModule from '@/components/PropertyInterestModule'
+import NurtureModule from '@/components/NurtureModule'
 import DocumentsModule from '@/components/DocumentsModule'
 import ForeignBuyerModule from '@/components/ForeignBuyerModule'
 import { Key, Menu } from 'lucide-react'
@@ -30,7 +34,7 @@ export type CRMSection =
   'dashboard' | 'contacts' | 'pipeline' | 'properties' | 'viewings' | 
   'offers' | 'tasks' | 'campaigns' | 'reports' |
   'cbi' | 'yield' | 'matching' | 'concierge' | 'developer' | 'referrals' | 'seasonal' | 'website_enquiries' |
-  'documents' | 'foreignbuyer'
+  'documents' | 'foreignbuyer' | 'attribution' | 'seller_leads' | 'property_interests' | 'nurture'
 
 const SIDEBAR_W = 220
 
@@ -98,6 +102,10 @@ export default function CRMPage() {
       case 'documents': return <DocumentsModule profile={profile} />
       case 'foreignbuyer': return <ForeignBuyerModule profile={profile} />
       case 'website_enquiries': return <WebsiteEnquiriesModule />
+      case 'attribution': return <AttributionModule profile={profile} />
+      case 'seller_leads': return <SellerLeadsModule profile={profile} />
+      case 'property_interests': return <PropertyInterestModule profile={profile} />
+      case 'nurture': return <NurtureModule profile={profile} />
       default: return <Dashboard profile={profile} onNavigate={handleNavigate} />
     }
   }
