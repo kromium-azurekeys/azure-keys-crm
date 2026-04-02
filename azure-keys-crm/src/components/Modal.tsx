@@ -55,9 +55,9 @@ export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps)
     )
   }
 
-  // Desktop: overlay scrolls, children are the card
-  // The <div className="modal"> inside each component IS the white card —
-  // Modal just provides the dimmed scrollable backdrop.
+  // Desktop: overlay is a plain scrollable block.
+  // The .modal div centers itself with margin: 0 auto (set in globals.css).
+  // No flex on the overlay — flex prevents tall modals from scrolling correctly.
   return (
     <div
       onClick={e => e.target === e.currentTarget && onClose()}
@@ -67,9 +67,6 @@ export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps)
         background: 'rgba(17,24,39,0.55)',
         backdropFilter: 'blur(4px)',
         padding: '32px 20px 48px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
       }}
     >
       {children}
