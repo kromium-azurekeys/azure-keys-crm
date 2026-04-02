@@ -97,6 +97,7 @@ export default function CRMPage() {
       case 'seasonal': return <SeasonalIntel profile={profile} />
       case 'documents': return <DocumentsModule profile={profile} />
       case 'foreignbuyer': return <ForeignBuyerModule profile={profile} />
+      case 'website_enquiries': return <WebsiteEnquiriesModule />
       default: return <Dashboard profile={profile} onNavigate={handleNavigate} />
     }
   }

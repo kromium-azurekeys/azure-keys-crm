@@ -61,10 +61,10 @@ export default function ReferralNetwork({ profile }: ReferralNetworkProps) {
   const feeColors: Record<string, string> = { paid: 'badge-green', pending: 'badge-orange', partial: 'badge-gold' }
 
   const typeEmoji: Record<string, string> = {
-    'Attorney / Legal Firm': '⚖️', 'Wealth Manager / Financial Advisor': '💼',
-    'International Broker': '🌐', 'Relocation Consultant': '✈️',
-    'Accountant / Tax Advisor': '📊', 'Private Banker': '🏦',
-    'Developer Contact': '🏗️', 'Past Client': '⭐', 'Other': '👤',
+    'Attorney / Legal Firm': 'Atty', 'Wealth Manager / Financial Advisor': 'WM',
+    'International Broker': 'Broker', 'Relocation Consultant': 'Relocation',
+    'Accountant / Tax Advisor': 'Tax', 'Private Banker': 'Banking',
+    'Developer Contact': 'Dev', 'Past Client': 'Client', 'Other': 'Other',
   }
 
   const totalFees = referrers.reduce((sum, r) => sum + (r.total_fees_paid || 0), 0)
@@ -86,9 +86,9 @@ export default function ReferralNetwork({ profile }: ReferralNetworkProps) {
       {/* Stats */}
       <div style={{ padding: isMobile ? '16px' : '20px 32px', display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3,1fr)', gap: isMobile ? 10 : 16 }}>
         {[
-          { label: 'Referral Sources', value: String(referrers.length), sub: 'Active partners', icon: '🤝' },
-          { label: 'Total Referrals', value: String(totalReferrals), sub: 'All time', icon: '📥' },
-          { label: 'Fees Paid / Due', value: fmt(totalFees), sub: 'Referral commissions', icon: '💰' },
+          { label: 'Referral Sources', value: String(referrers.length), sub: 'Active partners', icon: null },
+          { label: 'Total Referrals', value: String(totalReferrals), sub: 'All time', icon: null },
+          { label: 'Fees Paid / Due', value: fmt(totalFees), sub: 'Referral commissions', icon: '$' },
         ].map(s => (
           <div key={s.label} className="metric-card">
             <div style={{ fontSize: 22, marginBottom: 8 }}>{s.icon}</div>
@@ -121,7 +121,7 @@ export default function ReferralNetwork({ profile }: ReferralNetworkProps) {
                   onClick={() => { setForm(r); setSelected(r); setShowModal(true) }}
                 >
                   <div style={{ width: 36, height: 36, borderRadius: 8, background: 'var(--navy)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, flexShrink: 0 }}>
-                    {typeEmoji[r.referrer_type] || '👤'}
+                    {typeEmoji[r.referrer_type] || ''}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <p style={{ fontWeight: 600, fontSize: 13, color: 'var(--text)' }}>{r.name}</p>
@@ -144,7 +144,7 @@ export default function ReferralNetwork({ profile }: ReferralNetworkProps) {
           </div>
           <div style={{ padding: 20 }}>
             {referrers.filter(r => r.fee_status !== 'paid').length === 0 ? (
-              <p style={{ color: 'var(--text-4)', fontSize: 13, textAlign: 'center', padding: 20 }}>All referral fees are settled ✓</p>
+              <p style={{ color: 'var(--text-4)', fontSize: 13, textAlign: 'center', padding: 20 }}>All referral fees are settled</p>
             ) : (
               <table className="crm-table">
                 <thead><tr><th>Referrer</th><th>Status</th><th>Amount</th></tr></thead>

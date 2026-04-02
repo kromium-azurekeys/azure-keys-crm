@@ -66,10 +66,10 @@ export default function SeasonalIntel({ profile }: SeasonalIntelProps) {
           background: isHighSeason ? 'linear-gradient(135deg, #0d1f3c, #1a4a7a)' : 'linear-gradient(135deg, #1a3c1a, #2d5a2d)',
           display: 'flex', alignItems: 'center', gap: 16,
         }}>
-          <div style={{ fontSize: 32 }}>{isHighSeason ? '🌞' : '🌿'}</div>
+          
           <div style={{ flex: 1 }}>
             <p style={{ fontWeight: 700, fontSize: 15, color: '#fff', marginBottom: 2 }}>
-              {isHighSeason ? '🏖️ HIGH SEASON ACTIVE — November to April' : '🌿 OFF-SEASON — May to October'}
+              {isHighSeason ? 'HIGH SEASON ACTIVE — November to April' : 'OFF-SEASON — May to October'}
             </p>
             <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.65)' }}>
               {isHighSeason
@@ -90,7 +90,7 @@ export default function SeasonalIntel({ profile }: SeasonalIntelProps) {
           border: `1px solid ${hurricanePeak ? '#8c2a2a' : isHurricaneSeason ? '#8c5a1a' : 'var(--border)'}`,
           display: 'flex', alignItems: 'center', gap: 16,
         }}>
-          <div style={{ fontSize: 28 }}>{hurricanePeak ? '🌀' : isHurricaneSeason ? '⚠️' : '✅'}</div>
+          <div style={{ fontSize: 28 }}>{hurricanePeak ? '!!' : isHurricaneSeason ? '!' : 'OK'}</div>
           <div style={{ flex: 1 }}>
             <p style={{ fontWeight: 700, fontSize: 14, color: hurricanePeak ? '#ff8080' : isHurricaneSeason ? '#fbb04c' : 'var(--text)', marginBottom: 2 }}>
               Hurricane Season: June 1 – November 30
@@ -169,7 +169,7 @@ export default function SeasonalIntel({ profile }: SeasonalIntelProps) {
           {isHurricaneSeason && (
             <div className="card" style={{ border: '1px solid var(--orange-border)' }}>
               <div style={{ padding: '14px 18px', borderBottom: '1px solid var(--orange-border)', background: 'var(--orange-pale)' }}>
-                <p style={{ fontWeight: 700, fontSize: 13, color: 'var(--orange)' }}>⚠️ Hurricane Season Property Checklist</p>
+                <p style={{ fontWeight: 700, fontSize: 13, color: 'var(--orange)' }}>Hurricane Season Property Checklist</p>
               </div>
               <div style={{ padding: '14px 18px' }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>

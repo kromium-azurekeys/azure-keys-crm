@@ -80,9 +80,9 @@ export default function CBIModule({ profile }: CBIModuleProps) {
       {/* Stats */}
       <div style={{ padding: isMobile ? '16px' : '24px 32px', display: 'grid', gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(3,1fr)', gap: isMobile ? 10 : 16 }}>
         {[
-          { label: 'Active Programs', value: '6', sub: 'Caribbean islands', icon: '🌍' },
-          { label: 'Active Applications', value: String(activeCount), sub: 'In progress', icon: '📋' },
-          { label: 'Approved', value: String(approvedCount), sub: 'This year', icon: '✅' },
+          { label: 'Active Programs', value: '6', sub: 'Caribbean islands', icon: null },
+          { label: 'Active Applications', value: String(activeCount), sub: 'In progress' },
+          { label: 'Approved', value: String(approvedCount), sub: 'This year' },
         ].map(s => (
           <div key={s.label} className="metric-card" style={{ padding: isMobile ? 14 : 20 }}>
             <div style={{ fontSize: 20, marginBottom: 6 }}>{s.icon}</div>

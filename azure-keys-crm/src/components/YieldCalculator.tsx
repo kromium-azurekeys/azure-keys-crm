@@ -83,7 +83,7 @@ export default function YieldCalculator({ profile }: YieldCalculatorProps) {
             </div>
           </div>
           <div style={{ marginTop: 14, padding: '12px 14px', background: 'var(--gold-pale)', border: '1px solid var(--gold-border)', borderRadius: 8, fontSize: 12, color: 'var(--gold)', lineHeight: 1.6 }}>
-            💡 Barbados peak season: Nov–Apr. Airbnb occupancy: 85% peak, 45% off-peak.
+            Tip: Barbados peak season: Nov–Apr. Airbnb occupancy: 85% peak, 45% off-peak.
           </div>
         </div>
 

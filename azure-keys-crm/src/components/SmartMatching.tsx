@@ -159,7 +159,7 @@ export default function SmartMatching({ profile }: SmartMatchingProps) {
               </div>
             </div>
             <div style={{ padding: '12px', background: 'var(--azure-pale)', borderRadius: 8, fontSize: 12, color: 'var(--gold)', border: '1px solid var(--azure-border)' }}>
-              ⚡ Matches update in real-time as you adjust criteria
+              Matches update in real-time as you adjust criteria
             </div>
           </div>
         </div>
@@ -217,7 +217,7 @@ export default function SmartMatching({ profile }: SmartMatchingProps) {
                     {p.reasons.length > 0 && (
                       <div style={{ marginTop: 8, display: 'flex', gap: 6, flexWrap: 'wrap' }}>
                         {p.reasons.map((r: string, i: number) => (
-                          <span key={i} className="badge badge-green" style={{ fontSize: 10 }}>✓ {r}</span>
+                          <span key={i} className="badge badge-green" style={{ fontSize: 10 }}>{r}</span>
                         ))}
                       </div>
                     )}

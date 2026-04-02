@@ -9,10 +9,10 @@ import { Plus, X, Star, Sparkles } from 'lucide-react'
 interface ConciergeModuleProps { profile: any }
 
 const ROLODEX = [
-  { category: 'Legal & Financial', items: ['⚖️ Chancery Chambers — Real Estate Attorney', '💼 Lex Caribbean — Offshore Legal', '🏦 CIBC FirstCaribbean — Private Banking', '📊 Deloitte Barbados — Tax Advisory'] },
-  { category: 'Property & Architecture', items: ['🏗️ Altman Group — Architects & Interior', '🔑 Island Property Management Ltd.', '🏠 Villa Management Barbados', '🔧 Paradise Maintenance Services'] },
-  { category: 'Lifestyle & Concierge', items: ['🛥️ Caribbean Sailing — Yacht Charter', '🏌️ Sandy Lane Golf Club', '🎨 Sosa Interior Design Studio', '✈️ Executive Air Charter Barbados'] },
-  { category: 'Tourism & Hospitality', items: ['🌊 Airbnb Superhost Network Barbados', '🍽️ Restaurant & Event Catering', '🧘 The Sanctuary — Wellness', '🎭 Crop Over Festival Concierge'] },
+  { category: 'Legal & Financial', items: ['Chancery Chambers — Real Estate Attorney', 'Lex Caribbean — Offshore Legal', 'CIBC FirstCaribbean — Private Banking', 'Deloitte Barbados — Tax Advisory'] },
+  { category: 'Property & Architecture', items: ['Altman Group — Architects & Interior', 'Island Property Management Ltd.', 'Villa Management Barbados', 'Paradise Maintenance Services'] },
+  { category: 'Lifestyle & Concierge', items: ['Caribbean Sailing — Yacht Charter', 'Sandy Lane Golf Club', 'Sosa Interior Design Studio', 'Executive Air Charter Barbados'] },
+  { category: 'Tourism & Hospitality', items: ['Airbnb Superhost Network Barbados', 'Restaurant & Event Catering', 'The Sanctuary — Wellness', 'Crop Over Festival Concierge'] },
 ]
 
 const MILESTONES = ['Pre-Closing Check-In', 'Key Handover Complete', '30-Day Check-In', '90-Day Check-In', 'Annual Property Review', 'Rental Management Setup', 'Renovation Planning', 'Re-Sale Interest']
