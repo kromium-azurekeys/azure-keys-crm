@@ -12,7 +12,7 @@ interface ModalProps {
 export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps) {
   const isMobile = useIsMobile()
 
-  // On desktop only: lock body scroll. Never on iOS — it breaks overlay scroll.
+  // Desktop only: lock body scroll. Never on iOS — breaks overlay scroll.
   useEffect(() => {
     if (isMobile) return
     const prev = document.body.style.overflow
@@ -22,36 +22,27 @@ export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps)
 
   if (isMobile) {
     return (
-      // The overlay IS the scroll container — no flex, no justify, just scroll
+      // Overlay IS the scroll container
       <div
         style={{
-          position: 'fixed',
-          inset: 0,
-          zIndex: 50,
+          position: 'fixed', inset: 0, zIndex: 50,
           overflowY: 'scroll',
-          // iOS requires -webkit prefix for momentum scrolling
           WebkitOverflowScrolling: 'touch' as any,
           background: 'rgba(17,24,39,0.6)',
           backdropFilter: 'blur(4px)',
         }}
       >
-        {/* Spacer pushes sheet to bottom on short content, tappable to close */}
-        <div
-          onClick={onClose}
-          style={{ minHeight: '15vh' }}
-        />
-
-        {/* Sheet — no maxHeight, no overflow:hidden, grows to full content */}
-        <div
-          style={{
-            width: '100%',
-            background: 'var(--surface)',
-            borderRadius: '20px 20px 0 0',
-            boxShadow: '0 -8px 40px rgba(0,0,0,0.4)',
-            // Ensure it reaches the very bottom of the screen
-            paddingBottom: 'env(safe-area-inset-bottom)',
-          }}
-        >
+        {/* Tappable spacer to close */}
+        <div onClick={onClose} style={{ minHeight: '15vh' }} />
+        {/* Sheet slides up from bottom */}
+        <div style={{
+          width: '100%',
+          background: 'var(--surface)',
+          borderRadius: '20px 20px 0 0',
+          boxShadow: '0 -8px 40px rgba(0,0,0,0.4)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          border: '1px solid var(--border)',
+        }}>
           {/* Drag handle */}
           <div style={{
             width: 40, height: 4, borderRadius: 2,
@@ -64,34 +55,24 @@ export default function Modal({ onClose, children, maxWidth = 580 }: ModalProps)
     )
   }
 
-  // Desktop: overlay scrolls, modal centered block, no height cap
+  // Desktop: overlay scrolls, children are the card
+  // The <div className="modal"> inside each component IS the white card —
+  // Modal just provides the dimmed scrollable backdrop.
   return (
     <div
       onClick={e => e.target === e.currentTarget && onClose()}
       style={{
-        position: 'fixed',
-        inset: 0,
-        zIndex: 50,
+        position: 'fixed', inset: 0, zIndex: 50,
         overflowY: 'auto',
         background: 'rgba(17,24,39,0.55)',
         backdropFilter: 'blur(4px)',
         padding: '32px 20px 48px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
       }}
     >
-      <div
-        style={{
-          background: 'var(--surface)',
-          borderRadius: 14,
-          boxShadow: '0 20px 40px rgba(0,0,0,0.15)',
-          border: '1px solid var(--border)',
-          animation: 'fadeUp 0.2s ease',
-          width: '90%',
-          maxWidth,
-          margin: '0 auto',
-        }}
-      >
-        {children}
-      </div>
+      {children}
     </div>
   )
 }

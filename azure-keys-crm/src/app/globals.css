@@ -232,7 +232,7 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); font
   max-width: 580px;
   margin: 0 auto;
 }
-.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); }
+.modal-header { padding: 20px 24px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
 .modal-body { padding: 20px 24px; }
 .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); background: var(--surface-2); display: flex; justify-content: flex-end; gap: 8px; border-radius: 0 0 14px 14px; }
 
