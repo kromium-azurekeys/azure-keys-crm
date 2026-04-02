@@ -1,0 +1,318 @@
+/* ============================================================
+   LISTINGS PAGE CSS  —  listings-page.css
+============================================================ */
+
+/* ── Page base: dark background throughout ── */
+body.listings-page {
+  background: #0a0d12;
+  color: #e8e0d0;
+}
+
+/* Nav always scrolled (no hero to float over) */
+body.listings-page .nav {
+  background: rgba(10,13,18,0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── Page Header ── */
+.listings-header {
+  padding-top: 9rem;  /* clear fixed nav */
+  padding-bottom: 3rem;
+  background: #0a0d12;
+  border-bottom: 1px solid rgba(201,169,110,0.12);
+  text-align: center;
+}
+
+.listings-header__eyebrow {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #c9a96e;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.listings-header__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  color: #e8e0d0;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.listings-header__title em {
+  color: #c9a96e;
+  font-style: italic;
+}
+
+.listings-header__sub {
+  font-size: 0.9rem;
+  color: rgba(232,224,208,0.5);
+  letter-spacing: 0.04em;
+}
+
+/* ── Filters Bar ── */
+.listings-filters-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(13,17,23,0.97);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(201,169,110,0.1);
+  padding-block: 1rem;
+}
+
+/* On listings page the nav is also sticky so offset the filter bar */
+body.listings-page .listings-filters-bar {
+  top: 62px;  /* approx nav height when scrolled */
+}
+
+.filters-bar__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filters-bar__group {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.filters-bar__group--islands {
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.filters-bar__group--sort {
+  margin-left: auto;
+}
+
+.filter-pill {
+  padding: 0.45rem 1.1rem;
+  border: 1.5px solid rgba(201,169,110,0.2);
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(232,224,208,0.55);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.filter-pill:hover {
+  border-color: #c9a96e;
+  color: #c9a96e;
+}
+
+.filter-pill.active {
+  background: #c9a96e;
+  border-color: #c9a96e;
+  color: #0a0d12;
+}
+
+.filters-bar__group select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 0.45rem 2rem 0.45rem 0.85rem;
+  border: 1.5px solid rgba(201,169,110,0.2);
+  border-radius: 2px;
+  background: rgba(255,255,255,0.03)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c9a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E")
+    no-repeat right 0.6rem center;
+  color: rgba(232,224,208,0.7);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: border-color 0.15s ease;
+  outline: none;
+}
+
+.filters-bar__group select option {
+  background: #131820;
+  color: #e8e0d0;
+}
+
+.filters-bar__group select:focus {
+  border-color: #c9a96e;
+}
+
+.filters-bar__count {
+  font-size: 0.72rem;
+  color: rgba(232,224,208,0.4);
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+/* ── Main grid area ── */
+.listings-main {
+  min-height: 60vh;
+  padding-block: 3rem 6rem;
+  background: #0a0d12;
+}
+
+.listings-page-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+/* ── Loading Skeleton ── */
+.listings-skeleton {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.skeleton-card {
+  background: linear-gradient(90deg,
+    #131820 25%,
+    rgba(255,255,255,0.04) 50%,
+    #131820 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 8px;
+  aspect-ratio: 3/4;
+  border: 1px solid rgba(201,169,110,0.08);
+}
+
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+/* ── Empty State ── */
+.listings-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 6rem 2rem;
+  text-align: center;
+  color: rgba(232,224,208,0.4);
+}
+
+.listings-empty h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: rgba(232,224,208,0.6);
+  font-weight: 400;
+}
+
+.listings-empty p {
+  font-size: 0.875rem;
+}
+
+/* ── Pagination ── */
+.listings-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.pag-btn {
+  padding: 0.55rem 1rem;
+  border: 1.5px solid rgba(201,169,110,0.2);
+  border-radius: 2px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(232,224,208,0.6);
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 40px;
+  text-align: center;
+}
+
+.pag-btn:hover {
+  border-color: #c9a96e;
+  color: #c9a96e;
+}
+
+.pag-btn.active {
+  background: #c9a96e;
+  border-color: #c9a96e;
+  color: #0a0d12;
+}
+
+.pag-btn--prev,
+.pag-btn--next {
+  min-width: 80px;
+  letter-spacing: 0.06em;
+}
+
+.pag-ellipsis {
+  color: rgba(232,224,208,0.3);
+  font-size: 0.9rem;
+  padding: 0 0.25rem;
+}
+
+/* Under offer badge variant */
+.property-card__badge--status {
+  background: rgba(255,255,255,0.12);
+  color: #e8e0d0;
+  top: auto;
+  bottom: var(--space-md);
+  left: var(--space-md);
+}
+
+/* ── Responsive ── */
+@media (max-width: 1024px) {
+  .listings-page-grid,
+  .listings-skeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .listings-header {
+    padding-top: 7rem;
+  }
+
+  .filters-bar__inner {
+    gap: 0.75rem;
+  }
+
+  .filters-bar__group--islands {
+    width: 100%;
+    order: -1;
+  }
+
+  .filters-bar__group--sort {
+    margin-left: 0;
+  }
+
+  .filters-bar__count {
+    display: none;
+  }
+}
+
+@media (max-width: 600px) {
+  .listings-page-grid,
+  .listings-skeleton {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-pill {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.62rem;
+  }
+}

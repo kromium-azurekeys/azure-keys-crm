@@ -1,0 +1,148 @@
+/* ============================================================
+   RESPONSIVE STYLES
+============================================================ */
+
+/* ---- Tablet: ≤1024px ---- */
+@media (max-width: 1024px) {
+  .listings__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .testimonials__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .stats__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stats__item:nth-child(3)::after {
+    display: none;
+  }
+}
+
+/* ---- Mobile: ≤768px ---- */
+@media (max-width: 768px) {
+  /* Nav */
+  .nav__links,
+  .nav__cta {
+    display: none;
+  }
+
+  .nav__hamburger {
+    display: flex;
+  }
+
+  /* Hero */
+  .hero__actions {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__actions .btn {
+    width: min(320px, 100%);
+    justify-content: center;
+  }
+
+  /* Stats */
+  .stats__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats__item:nth-child(2)::after,
+  .stats__item:nth-child(4)::after {
+    display: none;
+  }
+
+  /* About */
+  .about__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about__image {
+    order: -1;
+    aspect-ratio: 16/9;
+  }
+
+  /* Listings */
+  .listings__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Investment */
+  .investment__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Testimonials */
+  .testimonials__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Contact */
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Footer */
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-2xl);
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  /* Forms */
+  .form__row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Small Mobile: ≤480px ---- */
+@media (max-width: 480px) {
+  .stats__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .stats__item:nth-child(5) {
+    grid-column: span 2;
+  }
+
+  .stats__item::after {
+    display: none;
+  }
+
+  .listings__filters {
+    gap: var(--space-xs);
+  }
+
+  .listings__filter {
+    padding: 0.5rem 1rem;
+    font-size: 0.65rem;
+  }
+}
+
+/* ---- Accessibility: reduce motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}

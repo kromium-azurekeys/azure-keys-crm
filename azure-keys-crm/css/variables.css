@@ -1,0 +1,73 @@
+/* ============================================================
+   DESIGN TOKENS — CSS CUSTOM PROPERTIES
+============================================================ */
+:root {
+  /* --- Typography --- */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* --- Colour Palette --- */
+  --color-bg:            #0a0d12;        /* Near-black navy */
+  --color-bg-alt:        #0c1016;        /* Section alt dark bg */
+  --color-bg-card:       #131820;        /* Card background */
+  --color-bg-light:      #ffffff;        /* Light section bg */
+  --color-bg-light-alt:  #f5f3ef;        /* Off-white alt */
+
+  --color-text:          #1a1a1a;        /* Dark text on light bg */
+  --color-text-light:    #e8e0d0;        /* Light text on dark bg */
+  --color-text-muted:    #9a8f80;        /* Muted / secondary text */
+  --color-text-muted-dark: #555047;      /* Muted on light bg */
+
+  --color-gold:          #c9a96e;        /* Primary accent — warm gold */
+  --color-gold-light:    #e8c98a;        /* Lighter gold */
+  --color-gold-dark:     #a07840;        /* Deeper gold */
+
+  --color-navy:          #0a1628;        /* Deep navy for dark elements */
+  --color-navy-mid:      #162338;        /* Mid navy */
+
+  --color-border:        rgba(201,169,110,0.2);   /* Gold-tinted border */
+  --color-border-light:  rgba(26,26,26,0.12);      /* Light-bg border */
+
+  /* --- Spacing Scale --- */
+  --space-xs:    0.25rem;   /*  4px */
+  --space-sm:    0.5rem;    /*  8px */
+  --space-md:    1rem;      /* 16px */
+  --space-lg:    1.5rem;    /* 24px */
+  --space-xl:    2rem;      /* 32px */
+  --space-2xl:   3rem;      /* 48px */
+  --space-3xl:   4rem;      /* 64px */
+  --space-4xl:   6rem;      /* 96px */
+  --space-5xl:   8rem;      /* 128px */
+
+  /* --- Section padding --- */
+  --section-pad: clamp(4rem, 8vw, 8rem);
+
+  /* --- Container --- */
+  --container-max: 1280px;
+  --container-pad: clamp(1.25rem, 5vw, 4rem);
+
+  /* --- Border radius --- */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  16px;
+
+  /* --- Shadows --- */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:  0 8px 32px rgba(0,0,0,0.12);
+  --shadow-lg:  0 24px 64px rgba(0,0,0,0.2);
+  --shadow-xl:  0 40px 80px rgba(0,0,0,0.3);
+
+  /* --- Transitions --- */
+  --transition-fast:    150ms ease;
+  --transition-base:    250ms ease;
+  --transition-slow:    400ms ease;
+  --transition-smooth:  600ms cubic-bezier(0.23, 1, 0.32, 1);
+
+  /* --- Z-indices --- */
+  --z-base:       1;
+  --z-dropdown:   100;
+  --z-sticky:     200;
+  --z-overlay:    300;
+  --z-modal:      400;
+  --z-toast:      500;
+}

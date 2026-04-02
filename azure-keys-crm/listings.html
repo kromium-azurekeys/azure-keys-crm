@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>All Properties — Azure Keys Luxury Caribbean Real Estate</title>
+  <meta name="description" content="Browse all 30 luxury properties across Jamaica, Bahamas, and Cayman Islands. Azure Keys — the Caribbean's premier real estate brokerage." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="css/reset.css" />
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/sections.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/listings-page.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body class="listings-page">
+
+  <!-- NAV -->
+  <nav class="nav scrolled" id="mainNav">
+    <a href="index.html" class="nav__logo">AzureKeys</a>
+    <ul class="nav__links">
+      <li><a href="index.html#about" class="nav__link">About</a></li>
+      <li><a href="listings.html" class="nav__link active">Listings</a></li>
+      <li><a href="index.html#buyer-match" class="nav__link">Find a Property</a></li>
+      <li><a href="index.html#seller-valuation" class="nav__link">Sell</a></li>
+      <li><a href="index.html#investment" class="nav__link">Invest</a></li>
+      <li><a href="index.html#contact" class="nav__link">Contact</a></li>
+    </ul>
+    <a href="index.html#contact" class="btn btn--ghost nav__cta">Private Consultation</a>
+    <button class="nav__hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="nav__drawer" id="mobileDrawer">
+    <button class="nav__drawer-close" id="drawerClose">✕</button>
+    <ul class="nav__drawer-links">
+      <li><a href="index.html" class="nav__drawer-link">Home</a></li>
+      <li><a href="listings.html" class="nav__drawer-link">All Listings</a></li>
+      <li><a href="index.html#buyer-match" class="nav__drawer-link">Find a Property</a></li>
+      <li><a href="index.html#seller-valuation" class="nav__drawer-link">Sell</a></li>
+      <li><a href="index.html#contact" class="nav__drawer-link">Contact</a></li>
+    </ul>
+  </div>
+  <div class="nav__overlay" id="navOverlay"></div>
+
+  <!-- PAGE HEADER -->
+  <header class="listings-header">
+    <div class="container">
+      <p class="listings-header__eyebrow">Exclusive Portfolio</p>
+      <h1 class="listings-header__title">All <em>Properties</em></h1>
+      <p class="listings-header__sub">
+        <span id="listingsCount">30</span> luxury properties across Jamaica, Bahamas &amp; Cayman Islands
+      </p>
+    </div>
+  </header>
+
+  <!-- FILTERS BAR -->
+  <div class="listings-filters-bar" id="filtersBar">
+    <div class="container">
+      <div class="filters-bar__inner">
+
+        <!-- Island filters -->
+        <div class="filters-bar__group filters-bar__group--islands" role="tablist" aria-label="Filter by island">
+          <button class="filter-pill active" data-filter="island" data-value="all" role="tab" aria-selected="true">All Islands</button>
+          <button class="filter-pill" data-filter="island" data-value="cayman" role="tab" aria-selected="false">Cayman Islands</button>
+          <button class="filter-pill" data-filter="island" data-value="bahamas" role="tab" aria-selected="false">Bahamas</button>
+          <button class="filter-pill" data-filter="island" data-value="jamaica" role="tab" aria-selected="false">Jamaica</button>
+        </div>
+
+        <!-- Type filter -->
+        <div class="filters-bar__group">
+          <select id="filterType" aria-label="Filter by property type">
+            <option value="all">All Types</option>
+            <option value="estate">Estate</option>
+            <option value="villa">Villa</option>
+            <option value="penthouse">Penthouse</option>
+            <option value="cottage">Cottage</option>
+            <option value="condo">Apartment</option>
+            <option value="land">Land</option>
+            <option value="townhouse">Townhouse</option>
+          </select>
+        </div>
+
+        <!-- Price range -->
+        <div class="filters-bar__group">
+          <select id="filterPrice" aria-label="Filter by price range">
+            <option value="all">Any Price</option>
+            <option value="0-2m">Under $2M</option>
+            <option value="2m-5m">$2M – $5M</option>
+            <option value="5m-10m">$5M – $10M</option>
+            <option value="10m+">$10M+</option>
+          </select>
+        </div>
+
+        <!-- Sort -->
+        <div class="filters-bar__group filters-bar__group--sort">
+          <select id="filterSort" aria-label="Sort listings">
+            <option value="featured">Featured First</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="newest">Newest Listed</option>
+            <option value="beds-desc">Most Bedrooms</option>
+          </select>
+        </div>
+
+        <!-- Results count -->
+        <div class="filters-bar__count">
+          <span id="resultsCount">30</span> properties
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- LISTINGS GRID -->
+  <main class="listings-main section section--dark">
+    <div class="container">
+
+      <!-- Loading skeleton -->
+      <div class="listings-skeleton" id="listingsSkeleton">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+
+      <!-- Actual grid (hidden while loading) -->
+      <div class="listings-page-grid" id="listingsPageGrid" style="display:none"></div>
+
+      <!-- No results -->
+      <div class="listings-empty" id="listingsEmpty" style="display:none">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <h3>No properties match your filters</h3>
+        <p>Try adjusting your search criteria</p>
+        <button class="btn btn--outline-light" id="clearFiltersBtn">Clear All Filters</button>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="footer__logo">AzureKeys</a>
+          <p>The Caribbean's premier luxury real estate brokerage — Jamaica, Bahamas &amp; Cayman Islands.</p>
+        </div>
+        <div class="footer__col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="listings.html">All Listings</a></li>
+            <li><a href="index.html#investment">Investment</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Markets</h4>
+          <ul>
+            <li><a href="listings.html?island=jamaica">Jamaica</a></li>
+            <li><a href="listings.html?island=bahamas">Bahamas</a></li>
+            <li><a href="listings.html?island=cayman">Cayman Islands</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; <span id="currentYear"></span> Azure Keys. All rights reserved.</p>
+        <p>Licensed Real Estate Brokers — Jamaica, Bahamas &amp; Cayman Islands</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/data/listings.data.js"></script>
+  <script src="js/data/supabase-loader.js"></script>
+  <script src="js/components/nav.js"></script>
+  <script src="js/pages/listings-page.js"></script>
+  <script>
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
