@@ -73,8 +73,8 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
           { label: 'Completed', value: campaigns.filter(c => c.status === 'completed').length, color: '#6a4a8c' },
         ].map(({ label, value, color }) => (
           <div key={label} className="metric-card">
-            <p style={{ marginBottom:4 }} style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', fontWeight: 300, color }}>{value}</p>
-            <p style={{ fontSize:"0.65rem" as const, letterSpacing:"0.08em", textTransform:"uppercase" as const }} style={{ color: 'var(--text-3)', fontSize: '0.65rem' }}>{label}</p>
+            <p style={{ fontFamily: 'var(--serif)', fontSize: '1.8rem', fontWeight: 300, color, marginBottom: 4 }}>{value}</p>
+            <p style={{ fontSize: '0.65rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-3)' }}>{label}</p>
           </div>
         ))}
       </div>
@@ -97,12 +97,12 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
               <div key={c.id} className="card" style={{ padding: isMobile ? 14 : 20, cursor:"pointer" }} onClick={() => { setForm(c); setSelectedCampaign(c); setShowModal(true) }}>
                 <div style={{ display:"flex", alignItems:"flex-start", justifyContent:"space-between", marginBottom:12 }}>
                   <div style={{ display:"flex", alignItems:"center", gap:12 }}>
-                    <div style={{ padding:8, borderRadius:5 }} style={{ background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
+                    <div style={{ padding: 8, borderRadius: 5, background: 'rgba(201,168,76,0.1)', border: '1px solid rgba(201,168,76,0.2)' }}>
                       <Icon size={16} style={{ color: 'var(--gold)' }} />
                     </div>
                     <div>
-                      <p style={{ fontWeight:500 }} style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13.5, fontWeight: 500 }}>{c.name}</p>
-                      <p style={{ fontSize:12, textTransform:"capitalize" as const }} style={{ color: 'var(--text-3)' }}>{c.type} campaign</p>
+                      <p style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13.5, fontWeight: 500 }}>{c.name}</p>
+                      <p style={{ fontSize: 12, textTransform: 'capitalize' as const, color: 'var(--text-3)' }}>{c.type} campaign</p>
                     </div>
                   </div>
                   <span className="text-xs px-2 py-1 capitalize" style={{
@@ -114,7 +114,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                 </div>
 
                 {c.subject && (
-                  <p style={{ fontSize:12, marginBottom:10, overflow:"hidden", textOverflow:"ellipsis", whiteSpace:"nowrap" as const }} style={{ color: 'var(--text-3)' }}>Subject: {c.subject}</p>
+                  <p style={{ fontSize: 12, marginBottom: 10, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' as const, color: 'var(--text-3)' }}>Subject: {c.subject}</p>
                 )}
 
                 {/* Stats */}
@@ -126,14 +126,14 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
                     { label: 'Unsub', value: c.stats?.unsubscribed || 0 },
                   ].map(({ label, value }) => (
                     <div key={label} style={{ textAlign:"center" as const }}>
-                      <p style={{ fontWeight:500 }} style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 500 }}>{value}</p>
+                      <p style={{ color: 'var(--text)', fontFamily: 'var(--sans)', fontSize: 13, fontWeight: 500 }}>{value}</p>
                       <p style={{ color: 'var(--text-3)', fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</p>
                     </div>
                   ))}
                 </div>
 
                 <div style={{ display:"flex", alignItems:"center", justifyContent:"space-between" }}>
-                  <p style={{ fontSize:12 }} style={{ color: 'var(--text-3)' }}>
+                  <p style={{ fontSize: 12, color: 'var(--text-3)' }}>
                     {c.scheduled_at ? `Scheduled: ${new Date(c.scheduled_at).toLocaleDateString()}` : `Created: ${new Date(c.created_at).toLocaleDateString()}`}
                   </p>
                   <div style={{ display:"flex", gap:8 }} onClick={e => e.stopPropagation()}>
@@ -160,7 +160,7 @@ export default function CampaignsModule({ profile }: CampaignsModuleProps) {
           <div className="modal" style={{ width: "90%", maxWidth: 640, display: "flex", flexDirection: "column" }}>
             <div className="modal-header" style={{ borderColor: 'var(--border)' }}>
               <div>
-                <p style={{ fontSize:"0.65rem" as const, letterSpacing:"0.08em", textTransform:"uppercase" as const }} style={{ color: 'var(--gold)' }}>{selectedCampaign ? 'Edit' : 'New'} Campaign</p>
+                <p style={{ fontSize: '0.65rem', letterSpacing: '0.08em', textTransform: 'uppercase' as const, color: 'var(--gold)' }}>{selectedCampaign ? 'Edit' : 'New'} Campaign</p>
                 <h2 className="serif text-2xl font-light mt-1" style={{ fontFamily: 'var(--serif)', fontSize: '1.4rem', fontWeight: 400, color: 'var(--text)' }}>{selectedCampaign ? selectedCampaign.name : 'Create Campaign'}</h2>
               </div>
               <button onClick={() => setShowModal(false)} style={{ background: 'none', border: 'none', color: 'var(--text-3)', cursor: 'pointer' }}><X size={20} /></button>
